@@ -48,6 +48,7 @@
     python312Packages.pyflakes
     python312Packages.pyls-isort
     python312Packages.python-lsp-server
+    rust-analyzer
     stylua
     svelte-language-server
     tailwindcss-language-server
