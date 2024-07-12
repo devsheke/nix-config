@@ -1,8 +1,4 @@
-{
-  outputs,
-  pkgs,
-  ...
-}: let
+{outputs, ...}: let
   homeModules = ../../../modules/home-manager;
   shellModules = homeModules + "/shell";
   osIcon = "󰀵";
@@ -37,7 +33,7 @@ in {
   };
   programs.home-manager.enable = true;
 
-  programs.alacritty.settings.font.size = 12.0;
+  programs.alacritty.settings.font.size = 11.0;
 
   home.stateVersion = "24.05";
 }
