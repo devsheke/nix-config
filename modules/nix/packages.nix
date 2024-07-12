@@ -15,17 +15,20 @@
   devTools = with pkgs; [
     air
     git
-    elixir_1_15
     go
+    goimports
+    golines
     gnumake
     clang
     nodejs_22
     nodePackages.pnpm
     openssl
     postgresql
+    flyctl
     pyenv
     python312
     python312Packages.pip
+    sqlc
     stable.neovim
     rust-bin.stable.latest.default
   ];
@@ -53,6 +56,7 @@
     svelte-language-server
     tailwindcss-language-server
     taplo
+    templ
     yaml-language-server
   ];
 
@@ -60,7 +64,11 @@
     alacritty
     brave
     celluloid
+    discord-screenaudio
+    flameshot
+    onlyoffice-bin_latest
     openvpn
+    qbittorrent
     signal-desktop
     spotify
     thunderbird
