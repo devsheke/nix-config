@@ -2,7 +2,7 @@
   xsession.windowManager.i3 = rec {
     enable = true;
     config = {
-      modifier = "Mod4";
+      modifier = "Mod1";
       assigns = {
         "2" = [{class = "Alacritty";}];
         "1" = [{class = "Brave";}];

@@ -10,6 +10,7 @@ in {
   imports =
     [
       ./programs/i3.nix
+      ./programs/picom.nix
       (homeModules + "/alacritty.nix")
     ]
     ++ [
@@ -65,12 +66,6 @@ in {
       package = pkgs.rose-pine-gtk-theme;
       name = "rose-pine";
     };
-  };
-
-  qt = {
-    enable = true;
-    platformTheme.name = "rose-pine";
-    style.name = "rose-pine";
   };
 
   programs.home-manager.enable = true;
