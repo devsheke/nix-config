@@ -19,7 +19,6 @@
       window_gap = 15;
     };
     extraConfig = ''
-      # Custom spaces for 3 desktops
       yabai -m space 1 --label one
       yabai -m space 2 --label two
       yabai -m space 3 --label three
@@ -31,7 +30,6 @@
       yabai -m space 9 --label nine
       yabai -m space 10 --label ten
 
-      # Float system preferences. Most of these just diable Yabai from resizing them.
       yabai -m rule --add app="^Brave" manage=on sticky=off space=^2
       yabai -m rule --add app="^Alacritty" manage=on sticky=off space=^1
       yabai -m rule --add app="^System Preferences$" sticky=off manage=off
@@ -39,14 +37,14 @@
       yabai -m rule --add app="^Disk Utility$" sticky=off manage=off
       yabai -m rule --add app="^System Information$" sticky=off manage=off
       yabai -m rule --add app="^Activity Monitor$" sticky=off manage=off
-      yabai -m rule --add title="^Spotify$" sticky=off manage=off space=^3
+      yabai -m rule --add app="^Spotify$" sticky=off manage=off space=^3
       yabai -m rule --add app="^Music$" sticky=off manage=off
       yabai -m rule --add app="^Messages$" sticky=off manage=off
       yabai -m rule --add app="^App Store$" sticky=off manage=off
       yabai -m rule --add app="^balenaEtcher$" sticky=off manage=off
       yabai -m rule --add app="^Preview$" sticky=off manage=off
       yabai -m rule --add app="^QuickTimePlayer$" sticky=off manage=off
-      yabai -m rule --add title="^Signal$" sticky=off manage=off space=^4
+      yabai -m rule --add app="^Signal$" sticky=off manage=off space=^4
       yabai -m rule --add app="^IINA$" sticky=off manage=off space=^5
       yabai -m rule --add app="^qBittorrent$" sticky=off manage=off space=^6
     '';
