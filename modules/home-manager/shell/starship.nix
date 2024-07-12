@@ -9,7 +9,7 @@ in {
     enable = true;
     package = starship;
     settings = {
-      format = format_main + format_git + format_end + "$docker_context";
+      format = format_main + format_git + "$docker_context" + format_end;
       right_format = "${format_right_langs}${format_right_end}";
       hostname = {
         ssh_only = false;
