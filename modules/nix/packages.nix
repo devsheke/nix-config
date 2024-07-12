@@ -16,7 +16,7 @@
     air
     git
     go
-    goimports
+    gotools
     golines
     gnumake
     clang
