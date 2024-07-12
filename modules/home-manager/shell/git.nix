@@ -1,5 +1,12 @@
 {pkgs, ...}: {
-  programs.git.enable = true;
+  programs.git = {
+    enable = true;
+    userEmail = "abhi@sheke.tech";
+    userName = "devsheke";
+    extraConfig = {
+      init.defaultBranch = "main";
+    };
+  };
 
   programs.gh = with pkgs; {
     enable = true;
