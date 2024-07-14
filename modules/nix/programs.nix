@@ -14,6 +14,7 @@
 
   devTools = with pkgs; [
     air
+    dune_3
     git
     go
     goimports
@@ -22,6 +23,9 @@
     clang
     nodejs_22
     nodePackages.pnpm
+    ocaml
+    ocamlPackages.utop
+    opam
     openssl
     postgresql
     flyctl
@@ -46,6 +50,9 @@
     nodePackages.bash-language-server
     nodePackages.typescript-language-server
     nodePackages.vscode-json-languageserver
+    ocamlPackages.lsp
+    ocamlPackages.ocamlformat
+    ocamlPackages.odoc
     prettierd
     python312Packages.black
     python312Packages.pyflakes
