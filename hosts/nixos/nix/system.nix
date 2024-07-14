@@ -9,10 +9,10 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
+  services.displayManager.defaultSession = "none+i3";
   services.xserver = {
     enable = true;
     displayManager = {
-      defaultSession = "none+i3";
       lightdm = {
         enable = true;
         background = "/home/sheke/Pictures/background-image.jpg";

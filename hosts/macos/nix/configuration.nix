@@ -5,7 +5,7 @@
   rust-overlay,
   ...
 }: let
-  packages = import ../../../modules/nix/packages.nix pkgs;
+  packages = import ../../../modules/nix/programs.nix pkgs;
 in {
   imports = [
     ./brew.nix

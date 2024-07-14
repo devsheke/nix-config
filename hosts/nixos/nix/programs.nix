@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  packages = import ../../../modules/nix/packages.nix pkgs;
+  packages = import ../../../modules/nix/programs.nix pkgs;
 in {
   environment.systemPackages = packages.tools ++ packages.devTools ++ packages.lsp ++ packages.guis;
 

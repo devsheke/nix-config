@@ -10,7 +10,7 @@
   imports = [
     ./hardware-configuration.nix
     ./system.nix
-    ./packages.nix
+    ./programs.nix
     ../../../modules/nix/nvidia.nix
   ];
 

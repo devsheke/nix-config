@@ -70,6 +70,7 @@
   guis = with pkgs; [
     alacritty
     brave
+    firefox-devedition
     celluloid
     discord-screenaudio
     flameshot
