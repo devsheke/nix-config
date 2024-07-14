@@ -17,7 +17,7 @@
     dune_3
     git
     go
-    goimports
+    gotools
     golines
     gnumake
     clang
