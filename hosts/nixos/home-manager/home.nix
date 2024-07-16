@@ -12,12 +12,14 @@ in {
       ./programs/i3.nix
       ./programs/picom.nix
       (homeModules + "/alacritty.nix")
+      (homeModules + "/nvim.nix")
     ]
     ++ [
       (shellModules + "/bat.nix")
       (shellModules + "/eza.nix")
       (shellModules + "/fzf.nix")
       (shellModules + "/git.nix")
+      (shellModules + "/nnn.nix")
       (shellModules + "/tmux.nix")
       (shellModules + "/zsh.nix")
       (import (shellModules + "/fastfetch.nix") {osIcon = osIcon;})
