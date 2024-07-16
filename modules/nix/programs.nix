@@ -7,6 +7,7 @@
     inetutils
     jq
     killall
+    nnn
     ripgrep
     unzip
     zip
