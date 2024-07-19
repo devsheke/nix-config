@@ -19,6 +19,11 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -28,6 +33,7 @@
     nix-darwin,
     home-manager,
     rust-overlay,
+    spicetify-nix,
   } @ inputs: let
     inherit (self) outputs;
   in {
@@ -49,17 +55,19 @@
     homeConfigurations = {
       "sheke@macos" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-darwin;
-        extraSpecialArgs = {inherit inputs outputs;};
+        extraSpecialArgs = {inherit inputs outputs spicetify-nix;};
         modules = [
           ./hosts/macos/home-manager/home.nix
+          ./modules/spicetify/spicetify.nix
         ];
       };
 
       "sheke@nixos" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        extraSpecialArgs = {inherit inputs outputs home-manager;};
+        extraSpecialArgs = {inherit inputs outputs home-manager spicetify-nix;};
         modules = [
           ./hosts/nixos/home-manager/home.nix
+          ./modules/spicetify/spicetify.nix
         ];
       };
     };
