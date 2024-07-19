@@ -67,7 +67,8 @@
 
         # Apps
         "${config.modifier}+Return" = "exec alacritty";
-        "${config.modifier}+w" = "exec brave";
+        "${config.modifier}+w" = "exec firefox-devedition";
+        "${config.modifier}+d" = "exec thunar";
         "${config.modifier}+space" = "exec rofi -show run";
         "${config.modifier}+Shift+/" = "exec dm-tool lock";
 
