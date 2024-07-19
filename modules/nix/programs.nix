@@ -68,7 +68,7 @@
     yaml-language-server
   ];
 
-  guis = with pkgs; [
+  linux = with pkgs; [
     alacritty
     brave
     firefox-devedition
@@ -77,6 +77,7 @@
     flameshot
     onlyoffice-bin_latest
     openvpn
+    pkg-config
     qbittorrent
     signal-desktop
     spotify
