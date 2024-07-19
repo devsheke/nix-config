@@ -5,7 +5,7 @@
       modifier = "Mod1";
       assigns = {
         "2" = [{class = "Alacritty";}];
-        "1" = [{class = "Brave";}];
+        "1" = [{class = "Brave";} {class = "firefox";}];
         "4" = [{class = "Signal";} {class = "Spotify";}];
       };
       bars = [];
@@ -111,7 +111,7 @@
           command = "alacritty";
         }
         {
-          command = "brave";
+          command = "firefox-devedition";
         }
       ];
     };
