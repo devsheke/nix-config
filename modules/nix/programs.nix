@@ -83,5 +83,7 @@
     spotify
     thunderbird
     xfce.thunar
+    blueman
+    networkmanagerapplet
   ];
 }
