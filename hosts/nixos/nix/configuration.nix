@@ -42,6 +42,9 @@
   networking.hostName = "nixos";
   security.polkit.enable = true;
 
+  hardware.bluetooth.enable = true; # enables support for Bluetooth
+  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+
   users.users = {
     sheke = {
       # Skip setting a root password by passing '--no-root-passwd' to nixos-install.
