@@ -51,6 +51,7 @@
         {class = "Spotify";}
         {class = "nvidia-settings";}
         {class = "Thunar";}
+        {class = ".blueman-manager-wrapped";}
       ];
       fonts = {
         names = ["Noto Sans"];
@@ -70,10 +71,10 @@
         "${config.modifier}+w" = "exec firefox-devedition";
         "${config.modifier}+d" = "exec thunar";
         "${config.modifier}+space" = "exec rofi -show run";
-        "${config.modifier}+Shift+/" = "exec dm-tool lock";
+        "Ctrl+Shift+l" = "exec dm-tool lock";
 
         # Windows
-        "${config.modifier}+Shift+f" = "floating toggle";
+        "${config.modifier}+f" = "floating toggle";
         "${config.modifier}+h" = "focus left";
         "${config.modifier}+l" = "focus right";
         "${config.modifier}+j" = "focus down";
@@ -100,6 +101,11 @@
       terminal = "alacritty";
       startup = [
         {
+          command = "--no-startup-id flameshot";
+          always = true;
+        }
+        {command = "blueman-applet";}
+        {
           command = "/home/sheke/.config/eww/bar/scripts/i3ws/i3ws";
         }
         {command = "--no-startup-id eww daemon";}
@@ -108,12 +114,8 @@
           command = "--no-startup-id autotiling";
           always = true;
         }
-        {
-          command = "alacritty";
-        }
-        {
-          command = "firefox-devedition";
-        }
+        {command = "alacritty";}
+        {command = "firefox-devedition";}
       ];
     };
   };
