@@ -1,6 +1,9 @@
 {...}: {
   homebrew = {
     enable = true;
+    brews = [
+      "speedtest-cli"
+    ];
     casks = [
       "alacritty"
       "aldente"
@@ -13,7 +16,6 @@
       "macs-fan-control"
       "onlyoffice"
       "qbittorrent"
-      "signal"
       "spotify"
       "raycast"
       "thunderbird"

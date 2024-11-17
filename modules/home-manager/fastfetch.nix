@@ -1,4 +1,8 @@
-{osIcon, ...}: {pkgs, ...}: {
+{
+  osIcon,
+  pkgs,
+  ...
+}: {
   programs.fastfetch = with pkgs; {
     enable = true;
     package = fastfetch;

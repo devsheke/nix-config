@@ -2,8 +2,8 @@
   description = "devsheke's nixos configurations";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/8809585e6937d0b07fc066792c8c9abf9c3fe5c4";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -19,11 +19,6 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    spicetify-nix = {
-      url = "github:Gerg-L/spicetify-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
@@ -33,7 +28,6 @@
     nix-darwin,
     home-manager,
     rust-overlay,
-    spicetify-nix,
   } @ inputs: let
     inherit (self) outputs;
   in {
@@ -41,35 +35,24 @@
 
     darwinConfigurations."macos" = nix-darwin.lib.darwinSystem {
       specialArgs = {inherit self inputs outputs rust-overlay;};
-      modules = [./hosts/macos/nix/configuration.nix];
-    };
-    darwinPackages = self.darwinConfigurations."macos".pkgs;
-
-    nixosConfigurations = {
-      nixos = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs rust-overlay;};
-        modules = [./hosts/nixos/nix/configuration.nix];
-      };
+      modules = [./machines/macos/nix];
     };
 
-    homeConfigurations = {
-      "sheke@macos" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-darwin;
-        extraSpecialArgs = {inherit inputs outputs spicetify-nix;};
-        modules = [
-          ./hosts/macos/home-manager/home.nix
-          ./modules/spicetify/spicetify.nix
-        ];
-      };
+    nixosConfigurations."nixos" = nixpkgs.lib.nixosSystem {
+      specialArgs = {inherit inputs outputs rust-overlay;};
+      modules = [./machines/nixos/nix];
+    };
 
-      "sheke@nixos" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        extraSpecialArgs = {inherit inputs outputs home-manager spicetify-nix;};
-        modules = [
-          ./hosts/nixos/home-manager/home.nix
-          ./modules/spicetify/spicetify.nix
-        ];
-      };
+    homeConfigurations."sheke@macos" = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.x86_64-darwin;
+      extraSpecialArgs = {inherit inputs outputs;};
+      modules = [./machines/macos/home-manager];
+    };
+
+    homeConfigurations."sheke@nixos" = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      extraSpecialArgs = {inherit inputs outputs;};
+      modules = [./machines/nixos/home-manager];
     };
   };
 }

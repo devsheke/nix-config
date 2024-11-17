@@ -3,6 +3,7 @@
     enable = true;
     package = pkgs.skhd;
     skhdConfig = ''
+      rcmd + rshift - r : yabai --restart-service
       rcmd + rshift - n : yabai -m space --create
       rcmd + lcmd + rshift - d : yabai -m space --destroy
 

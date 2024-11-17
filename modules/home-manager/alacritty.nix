@@ -4,45 +4,45 @@
     package = alacritty;
     settings = {
       font.normal = {
-        family = "JetBrainsMono Nerd Font";
+        family = "GeistMono Nerd Font"; # or OverpassM Nerd Font
         style = "Regular";
       };
 
       colors.primary = {
-        foreground = "#e0def4";
-        background = "#191724";
-        dim_foreground = "#908caa";
-        bright_foreground = "#e0def4";
+        foreground = "#575279";
+        background = "#faf4ed";
+        dim_foreground = "#797593";
+        bright_foreground = "#575279";
       };
 
       colors.cursor = {
-        text = "#e0def4";
-        cursor = "#524f67";
+        text = "#575279";
+        cursor = "#cecacd";
       };
 
       colors.vi_mode_cursor = {
-        text = "#e0def4";
-        cursor = "#524f67";
+        text = "#575279";
+        cursor = "#cecacd";
       };
 
       colors.search.matches = {
-        foreground = "#908caa";
-        background = "#26233a";
+        foreground = "#797593";
+        background = "#f2e9e1";
       };
 
       colors.search.focused_match = {
-        foreground = "#191724";
-        background = "#ebbcba";
+        foreground = "#faf4ed";
+        background = "#d7827e";
       };
 
       colors.hints.start = {
-        foreground = "#908caa";
-        background = "#1f1d2e";
+        foreground = "#797593";
+        background = "#fffaf3";
       };
 
       colors.hints.end = {
-        foreground = "#6e6a86";
-        background = "#1f1d2e";
+        foreground = "#9893a5";
+        background = "#fffaf3";
       };
 
       colors.line_indicator = {
@@ -51,46 +51,58 @@
       };
 
       colors.footer_bar = {
-        foreground = "#e0def4";
-        background = "#1f1d2e";
+        foreground = "#575279";
+        background = "#fffaf3";
       };
 
       colors.selection = {
-        text = "#e0def4";
-        background = "#403d52";
+        text = "#575279";
+        background = "#dfdad9";
       };
 
       colors.normal = {
-        black = "#26233a";
-        red = "#eb6f92";
-        green = "#31748f";
-        yellow = "#f6c177";
-        blue = "#9ccfd8";
-        magenta = "#c4a7e7";
-        cyan = "#ebbcba";
-        white = "#e0def4";
+        black = "#f2e9e1";
+        red = "#b4637a";
+        green = "#286983";
+        yellow = "#ea9d34";
+        blue = "#56949f";
+        magenta = "#907aa9";
+        cyan = "#d7827e";
+        white = "#575279";
       };
 
       colors.bright = {
-        black = "#6e6a86";
-        red = "#eb6f92";
-        green = "#31748f";
-        yellow = "#f6c177";
-        blue = "#9ccfd8";
-        magenta = "#c4a7e7";
-        cyan = "#ebbcba";
-        white = "#e0def4";
+        black = "#9893a5";
+        red = "#b4637a";
+        green = "#286983";
+        yellow = "#ea9d34";
+        blue = "#56949f";
+        magenta = "#907aa9";
+        cyan = "#d7827e";
+        white = "#575279";
       };
 
       colors.dim = {
-        black = "#6e6a86";
-        red = "#eb6f92";
-        green = "#31748f";
-        yellow = "#f6c177";
-        blue = "#9ccfd8";
-        magenta = "#c4a7e7";
-        cyan = "#ebbcba";
-        white = "#e0def4";
+        black = "#9893a5";
+        red = "#b4637a";
+        green = "#286983";
+        yellow = "#ea9d34";
+        blue = "#56949f";
+        magenta = "#907aa9";
+        cyan = "#d7827e";
+        white = "#575279";
+      };
+
+      colors.indexed_colors = [
+        {
+          index = 16;
+          color = "#955f61";
+        }
+      ];
+
+      cursor.style = {
+        shape = "Block";
+        blinking = "Never";
       };
 
       window = {

@@ -1,0 +1,49 @@
+{
+  self,
+  outputs,
+  pkgs,
+  rust-overlay,
+  ...
+}: let
+  packages = import ../../../modules/nix/packages.nix pkgs;
+in {
+  imports = [
+    ./brew.nix
+    ./services/skhd.nix
+  ];
+
+  nix = {
+    package = pkgs.nix;
+    settings.experimental-features = "nix-command flakes";
+  };
+
+  nixpkgs = {
+    config.allowUnfree = true;
+    hostPlatform = "x86_64-darwin";
+    overlays = [
+      outputs.overlays.stable-packages
+      rust-overlay.overlays.default
+    ];
+  };
+
+  programs.zsh.enable = true;
+  environment.systemPackages =
+    packages.common
+    ++ packages.devTools
+    ++ (with pkgs; (with darwin; [
+      apple_sdk.frameworks.Foundation
+      apple_sdk.frameworks.Security
+    ]));
+
+  fonts.packages = with pkgs; [
+    (nerdfonts.override {fonts = ["GeistMono" "Overpass"];})
+  ];
+
+  services.nix-daemon.enable = true;
+
+  # Used for backwards compatibility, please read the changelog before changing.
+  # $ darwin-rebuild changelog
+  system.stateVersion = 4;
+  ids.uids.nixbld = 350;
+  system.configurationRevision = self.rev or self.dirtyRev or null;
+}
