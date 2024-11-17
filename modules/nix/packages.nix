@@ -18,6 +18,7 @@
   devTools = with pkgs; [
     dune_3
     flyctl
+    gcc
     gnumake
     go
     luajit
