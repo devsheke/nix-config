@@ -10,7 +10,7 @@ in {
   imports = [
     ./brew.nix
     ./services/skhd.nix
-    ./services/yabai.nix
+    # ./services/yabai.nix
   ];
 
   nix = {

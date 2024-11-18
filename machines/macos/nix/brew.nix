@@ -3,6 +3,7 @@
     enable = true;
     brews = [
       "speedtest-cli"
+      "koekeishiya/formulae/yabai"
     ];
     casks = [
       "alacritty"
