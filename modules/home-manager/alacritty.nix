@@ -1,48 +1,50 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  rosePine = (import ../../modules/rose-pine.nix {}).main;
+in {
   programs.alacritty = with pkgs; {
     enable = true;
     package = alacritty;
-    settings = {
+    settings = with rosePine; {
       font.normal = {
         family = "GeistMono Nerd Font"; # or OverpassM Nerd Font
-        style = "Regular";
+        style = "Medium";
       };
 
       colors.primary = {
-        foreground = "#575279";
-        background = "#faf4ed";
-        dim_foreground = "#797593";
-        bright_foreground = "#575279";
+        foreground = text;
+        background = base;
+        dim_foreground = subtle;
+        bright_foreground = text;
       };
 
       colors.cursor = {
-        text = "#575279";
-        cursor = "#cecacd";
+        text = text;
+        cursor = highlightHigh;
       };
 
       colors.vi_mode_cursor = {
-        text = "#575279";
-        cursor = "#cecacd";
+        text = text;
+        cursor = highlightHigh;
       };
 
       colors.search.matches = {
-        foreground = "#797593";
-        background = "#f2e9e1";
+        foreground = subtle;
+        background = overlay;
       };
 
       colors.search.focused_match = {
-        foreground = "#faf4ed";
-        background = "#d7827e";
+        foreground = base;
+        background = rose;
       };
 
       colors.hints.start = {
-        foreground = "#797593";
-        background = "#fffaf3";
+        foreground = subtle;
+        background = surface;
       };
 
       colors.hints.end = {
-        foreground = "#9893a5";
-        background = "#fffaf3";
+        foreground = muted;
+        background = surface;
       };
 
       colors.line_indicator = {
@@ -51,54 +53,47 @@
       };
 
       colors.footer_bar = {
-        foreground = "#575279";
-        background = "#fffaf3";
+        foreground = text;
+        background = surface;
       };
 
       colors.selection = {
-        text = "#575279";
-        background = "#dfdad9";
+        text = text;
+        background = highlightMed;
       };
 
       colors.normal = {
-        black = "#f2e9e1";
-        red = "#b4637a";
-        green = "#286983";
-        yellow = "#ea9d34";
-        blue = "#56949f";
-        magenta = "#907aa9";
-        cyan = "#d7827e";
-        white = "#575279";
+        black = overlay;
+        red = love;
+        green = pine;
+        yellow = gold;
+        blue = foam;
+        magenta = iris;
+        cyan = rose;
+        white = text;
       };
 
       colors.bright = {
-        black = "#9893a5";
-        red = "#b4637a";
-        green = "#286983";
-        yellow = "#ea9d34";
-        blue = "#56949f";
-        magenta = "#907aa9";
-        cyan = "#d7827e";
-        white = "#575279";
+        black = muted;
+        red = love;
+        green = pine;
+        yellow = gold;
+        blue = foam;
+        magenta = iris;
+        cyan = rose;
+        white = text;
       };
 
       colors.dim = {
-        black = "#9893a5";
-        red = "#b4637a";
-        green = "#286983";
-        yellow = "#ea9d34";
-        blue = "#56949f";
-        magenta = "#907aa9";
-        cyan = "#d7827e";
-        white = "#575279";
+        black = muted;
+        red = love;
+        green = pine;
+        yellow = gold;
+        blue = foam;
+        magenta = iris;
+        cyan = rose;
+        white = text;
       };
-
-      colors.indexed_colors = [
-        {
-          index = 16;
-          color = "#955f61";
-        }
-      ];
 
       cursor.style = {
         shape = "Block";
