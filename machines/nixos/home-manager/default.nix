@@ -5,12 +5,14 @@
 }: let
   homeModules = ../../../modules/home-manager;
   args = {
-    osIcon = "󰀵";
+    osIcon = "";
     pkgs = pkgs;
   };
 in {
   imports = [
     ./i3.nix
+    ./picom.nix
+    (homeModules + "/rose-pine-qbittorrent.nix")
     (homeModules + "/alacritty.nix")
     (homeModules + "/bat.nix")
     (homeModules + "/dunst.nix")
@@ -36,9 +38,20 @@ in {
 
   home.pointerCursor = {
     x11.enable = true;
-    name = "BreezeX-RosePineDawn-Linux";
+    gtk.enable = true;
+    name = "BreezeX-RosePine-Linux";
     package = pkgs.rose-pine-cursor;
     size = 24;
+  };
+
+  dconf = {
+    enable = true;
+    settings = {
+      "org/gnome/desktop/interface" = {
+        gtk-theme = "rose-pine";
+        color-scheme = "prefer-dark";
+      };
+    };
   };
 
   gtk = {
@@ -46,15 +59,27 @@ in {
     font.name = "Noto Sans";
     cursorTheme = {
       package = pkgs.rose-pine-cursor;
-      name = "BreezeX-RosePineDawn-Linux";
+      name = "BreezeX-RosePine-Linux";
     };
     iconTheme = {
       package = pkgs.rose-pine-icon-theme;
-      name = "rose-pine-dawn";
+      name = "rose-pine";
     };
     theme = {
       package = pkgs.rose-pine-gtk-theme;
-      name = "rose-pine-dawn";
+      name = "rose-pine";
+    };
+    gtk3 = {
+      extraConfig.gtk-application-prefer-dark-theme = true;
+    };
+  };
+
+  qt = {
+    enable = true;
+    platformTheme = "gtk";
+    style = {
+      name = "rose-pine";
+      package = pkgs.rose-pine-gtk-theme;
     };
   };
 
