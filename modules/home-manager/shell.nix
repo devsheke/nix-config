@@ -12,6 +12,7 @@
     initExtra = ''
       bindkey '^[[A' history-search-backward
       bindkey '^[[B' history-search-forward
+      export MANPAGER='nvim +Man!'
     '';
     shellAliases = {
       gst = "git status";
@@ -22,6 +23,7 @@
       "nix-rebuild" = "sudo nixos rebuild ~/.config/nix-config";
       "dw-rebuild" = "darwin rebuild ~/.config/nix-config";
       pyenv = "python3 -m venv .venv";
+      cloci = "cloc --exclude-dir=target,node_modules,build,dist,tmp,_build,.direnv --exclude-ext=yaml,json,toml,.envrc ./";
     };
     syntaxHighlighting = {
       enable = true;
