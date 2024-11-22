@@ -1,8 +1,8 @@
+# Download rose-pine themes for qBittorrent client
 {pkgs, ...}: let
-  rose-pine-theme = pkgs.git.cloneRepo {
-    url = "";
-    rev = "";
-    name = "rose-pine-theme";
+  rose-pine-theme = pkgs.fetchgit {
+    url = "https://github.com/rose-pine/qbittorrent";
+    hash = "sha256-KZ0TTzajJ4erpDu3IYEJphYouoCVwQSxR+4Qs+PHNkk=";
   };
 
   copyTheme =
@@ -14,9 +14,7 @@
     '';
 in {
   home.packages = [copyTheme];
-  home.file = {
-    ".config/qbittorrent/themes/rose-pine" = {
-      source = copyTheme;
-    };
+  xdg.configFile."qBittorrent/themes/rose-pine" = {
+    source = copyTheme;
   };
 }
