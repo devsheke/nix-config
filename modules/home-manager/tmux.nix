@@ -17,7 +17,7 @@
       {
         plugin = tmuxPlugins.rose-pine;
         extraConfig = ''
-          set -g @rose_pine_variant 'dawn'
+          set -g @rose_pine_variant 'moon'
 
           set -g @rose_pine_directory 'on'
           set -g @rose_pine_date_time '%d/%m %H:%M'
