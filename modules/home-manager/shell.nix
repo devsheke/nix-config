@@ -1,8 +1,11 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  rosePine = (import ../rose-pine.nix {}).main;
+in {
   programs.zsh = {
     enable = true;
     autocd = true;
     autosuggestion.enable = true;
+    defaultKeymap = "emacs";
     enableCompletion = true;
     history = {
       ignoreAllDups = true;
@@ -10,9 +13,15 @@
       share = true;
     };
     initExtra = ''
-      bindkey '^[[A' history-search-backward
-      bindkey '^[[B' history-search-forward
       export MANPAGER='nvim +Man!'
+
+      bindkey '^[[A' history-search-backward
+      bindkey ';5A' history-search-backward
+      bindkey '^[[B' history-search-forward
+      bindkey ';5B' history-search-forward
+
+      bindkey ';5C' forward-word
+      bindkey ';5D' backward-word
     '';
     shellAliases = {
       gst = "git status";
@@ -42,22 +51,22 @@
 
   programs.fzf = {
     enable = true;
-    colors = {
-      bg = "#faf4ed";
-      "bg+" = "#f2e9e1";
-      border = "#dfdad9";
-      fg = "#797593";
-      "fg+" = "#575279";
-      gutter = "#faf4ed";
-      hl = "#d7827e";
-      "hl+" = "#d7827e";
-      header = "#286983";
-      info = "#56949f";
-      marker = "#b4637a";
-      pointer = "#907aa9";
-      prompt = "#797593";
-      separator = "#403d52";
-      spinner = "#ea9d34";
+    colors = with rosePine; {
+      bg = base;
+      "bg+" = overlay;
+      border = highlightMed;
+      fg = subtle;
+      "fg+" = foam;
+      gutter = base;
+      hl = rose;
+      "hl+" = rose;
+      header = pine;
+      info = foam;
+      marker = love;
+      pointer = iris;
+      prompt = subtle;
+      separator = highlightMed;
+      spinner = gold;
     };
   };
 
