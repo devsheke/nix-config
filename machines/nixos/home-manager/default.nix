@@ -11,7 +11,6 @@
 in {
   imports = [
     ./i3.nix
-    ./picom.nix
     (homeModules + "/rose-pine-qbittorrent.nix")
     (homeModules + "/alacritty.nix")
     (homeModules + "/bat.nix")
@@ -48,7 +47,7 @@ in {
     enable = true;
     settings = {
       "org/gnome/desktop/interface" = {
-        gtk-theme = "rose-pine";
+        gtk-theme = "rose-pine-moon";
         color-scheme = "prefer-dark";
       };
     };
@@ -56,30 +55,36 @@ in {
 
   gtk = {
     enable = true;
-    font.name = "Noto Sans";
+    font.name = "Overpass Nerd Font Propo";
     cursorTheme = {
       package = pkgs.rose-pine-cursor;
       name = "BreezeX-RosePine-Linux";
     };
     iconTheme = {
       package = pkgs.rose-pine-icon-theme;
-      name = "rose-pine";
+      name = "rose-pine-moon";
     };
     theme = {
       package = pkgs.rose-pine-gtk-theme;
-      name = "rose-pine";
-    };
-    gtk3 = {
-      extraConfig.gtk-application-prefer-dark-theme = true;
+      name = "rose-pine-moon";
     };
   };
 
   qt = {
     enable = true;
-    platformTheme = "gtk";
+    platformTheme.name = "gtk";
     style = {
-      name = "rose-pine";
+      name = "rose-pine-moon";
       package = pkgs.rose-pine-gtk-theme;
+    };
+  };
+
+  services.picom = {
+    enable = true;
+    fade = false;
+    backend = "glx";
+    settings = {
+      log-file = "/tmp/picom.log";
     };
   };
 
