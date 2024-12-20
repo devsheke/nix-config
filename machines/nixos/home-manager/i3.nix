@@ -110,7 +110,7 @@ in {
       fonts = {
         names = ["Overpass Nerd Font Propo"];
         style = "Medium";
-        size = 11.0;
+        size = 9.0;
       };
       gaps.inner = 10;
       keybindings = {
@@ -156,7 +156,7 @@ in {
         # Media
         # "XF86AudioRaiseVolume" = "";
         # "XF86AudioLowerVolume" = "";
-        "XF86AudioPlay" = "playerctl play-pause";
+        "XF86AudioPlay" = "exec --no-startup-id playerctl play-pause";
       };
       terminal = "alacritty";
       startup = [
