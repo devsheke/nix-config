@@ -14,11 +14,6 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
@@ -27,19 +22,18 @@
     nixpkgs-stable,
     nix-darwin,
     home-manager,
-    rust-overlay,
   } @ inputs: let
     inherit (self) outputs;
   in {
     overlays = import ./overlays {inherit inputs;};
 
     darwinConfigurations."macos" = nix-darwin.lib.darwinSystem {
-      specialArgs = {inherit self inputs outputs rust-overlay;};
+      specialArgs = {inherit self inputs outputs;};
       modules = [./machines/macos/nix];
     };
 
     nixosConfigurations."nixos" = nixpkgs.lib.nixosSystem {
-      specialArgs = {inherit inputs outputs rust-overlay;};
+      specialArgs = {inherit inputs outputs;};
       modules = [./machines/nixos/nix];
     };
 

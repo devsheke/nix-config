@@ -7,7 +7,6 @@
     dnsutils
     home-manager
     inetutils
-    jq
     killall
     openssl
     ripgrep
@@ -16,21 +15,13 @@
   ];
 
   devTools = with pkgs; [
-    dune_3
     flyctl
     gcc
     gnumake
-    go
     luajit
-    lua-language-server
     neovim
     nil
-    # nodejs_22
-    # nodePackages.pnpm
-    ocamlPackages.utop
     python3Minimal
-    rust-bin.stable.latest.default
-    stylua
     taplo
   ];
 

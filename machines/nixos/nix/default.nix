@@ -4,7 +4,6 @@
   pkgs,
   inputs,
   outputs,
-  rust-overlay,
   ...
 }: let
   packages = import ../../../modules/nix/packages.nix pkgs;
@@ -16,7 +15,7 @@ in {
       allowUnfree = true;
       nvidia.acceptLicense = true;
     };
-    overlays = [outputs.overlays.stable-packages rust-overlay.overlays.default];
+    overlays = [outputs.overlays.stable-packages];
   };
 
   nix = let

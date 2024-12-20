@@ -2,7 +2,6 @@
   self,
   outputs,
   pkgs,
-  rust-overlay,
   ...
 }: let
   packages = import ../../../modules/nix/packages.nix pkgs;
@@ -23,7 +22,6 @@ in {
     hostPlatform = "x86_64-darwin";
     overlays = [
       outputs.overlays.stable-packages
-      rust-overlay.overlays.default
     ];
   };
 
