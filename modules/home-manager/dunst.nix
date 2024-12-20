@@ -2,48 +2,56 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  rosePine = (import ../rose-pine.nix {}).moon;
+in {
   services.dunst = {
     enable = true;
-    settings = {
+    iconTheme = {
+      name = "rose-pine-moon";
+      package = pkgs.rose-pine-icon-theme;
+      size = "32x32";
+    };
+    settings = with rosePine; {
       global = {
         browser = "${config.programs.brave.package}/bin/brave -new-tab";
         dmenu = "${pkgs.rofi}/bin/rofi -dmenu";
         follow = "mouse";
-        format = "<b>%s</b>\\n%b";
-        frame_color = "#555555";
+        format = "%i<b>%s</b>\\n%b";
+        frame_color = highlightMed;
         frame_width = 2;
         geometry = "500x5-5+30";
         horizontal_padding = 8;
-        icon_position = "off";
+        icon_position = "left";
         line_height = 0;
         markup = "full";
         padding = 8;
         separator_color = "frame";
         separator_height = 2;
-        transparency = 10;
+        transparency = 0;
         word_wrap = true;
-        font = "Noto Sans 9";
+        font = "Overpass Nerd Font Propo";
+        content_alignment = "top";
       };
 
       urgency_low = {
-        background = "#1d1f21";
-        foreground = "#4da1af";
-        frame_color = "#4da1af";
+        background = surface;
+        foreground = text;
+        frame_color = highlightHigh;
         timeout = 10;
       };
 
       urgency_normal = {
-        background = "#1d1f21";
-        foreground = "#70a040";
-        frame_color = "#70a040";
+        background = surface;
+        foreground = text;
+        frame_color = highlightHigh;
         timeout = 15;
       };
 
       urgency_critical = {
-        background = "#1d1f21";
-        foreground = "#dd5633";
-        frame_color = "#dd5633";
+        background = surface;
+        foreground = text;
+        frame_color = love;
         timeout = 0;
       };
 
