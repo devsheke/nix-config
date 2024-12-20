@@ -37,7 +37,7 @@ in {
     nix-direnv.enable = true;
   };
 
-  programs.alacritty.settings.font.size = 12.0;
+  programs.alacritty.settings.font.size = 11.5;
 
   home.stateVersion = "24.05";
 }
