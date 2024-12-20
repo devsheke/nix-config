@@ -11,7 +11,6 @@
 in {
   imports = [
     ./i3.nix
-    (homeModules + "/rose-pine-qbittorrent.nix")
     (homeModules + "/alacritty.nix")
     (homeModules + "/bat.nix")
     (homeModules + "/dunst.nix")
@@ -47,7 +46,7 @@ in {
     enable = true;
     settings = {
       "org/gnome/desktop/interface" = {
-        gtk-theme = "rose-pine-moon";
+        gtk-theme = "rose-pine";
         color-scheme = "prefer-dark";
       };
     };
@@ -62,11 +61,11 @@ in {
     };
     iconTheme = {
       package = pkgs.rose-pine-icon-theme;
-      name = "rose-pine-moon";
+      name = "rose-pine";
     };
     theme = {
       package = pkgs.rose-pine-gtk-theme;
-      name = "rose-pine-moon";
+      name = "rose-pine";
     };
   };
 
@@ -74,7 +73,7 @@ in {
     enable = true;
     platformTheme.name = "gtk";
     style = {
-      name = "rose-pine-moon";
+      name = "rose-pine";
       package = pkgs.rose-pine-gtk-theme;
     };
   };
