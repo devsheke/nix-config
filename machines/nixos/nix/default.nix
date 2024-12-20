@@ -124,6 +124,7 @@ in {
   users.users.sheke = {
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager" "docker"];
+    password = "password";
     shell = pkgs.zsh;
   };
 
