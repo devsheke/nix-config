@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  rosePine = (import ../rose-pine.nix {}).main;
+  rosePine = (import ../rose-pine.nix {}).moon;
 in {
   programs.zsh = {
     enable = true;
@@ -23,12 +23,11 @@ in {
       bindkey ';5C' forward-word
       bindkey ';5D' backward-word
     '';
+    oh-my-zsh = {
+      enable = true;
+      plugins = ["gh" "git" "golang" "zsh-autosuggestions"];
+    };
     shellAliases = {
-      gst = "git status";
-      gl = "git log";
-      glo = "git log --oneline";
-      gco = "git checkout";
-      gonew = "go mod init";
       "nix-rebuild" = "sudo nixos rebuild ~/.config/nix-config";
       "dw-rebuild" = "darwin rebuild ~/.config/nix-config";
       pyenv = "python3 -m venv .venv";

@@ -1,29 +1,55 @@
 {pkgs, ...}: let
-  notoFonts = "Noto Sans";
-  fontAwesome = "Font Awesome 6 Free";
-  rosePine = {
-    highlightMed = "#403d52";
-    love = "#eb6f92";
-    overlay = "#26233a";
-    subtle = "#908caa";
-    white = "#ffffff";
-    dawnFoam = "#56949f";
-    dawnLove = "#b4637a";
-    moonHighlightMed = "#44415a";
-    moonOverlay = "#393552";
-    moonSurface = "#2a273f";
-  };
+  rosePine = (import ../../../modules/rose-pine.nix {}).moon;
 in {
   xsession.windowManager.i3 = rec {
     enable = true;
     config = {
       modifier = "Mod4";
-      bars = [];
+      bars = with rosePine; [
+        {
+          colors = {
+            activeWorkspace = {
+              background = surface;
+              border = highlightLow;
+              text = muted;
+            };
+            background = base;
+            bindingMode = {
+              background = overlay;
+              border = highlightMed;
+              text = text;
+            };
+            focusedWorkspace = {
+              background = overlay;
+              border = highlightHigh;
+              text = text;
+            };
+            inactiveWorkspace = {
+              background = surface;
+              border = highlightLow;
+              text = muted;
+            };
+            statusline = text;
+            urgentWorkspace = {
+              background = love;
+              border = rose;
+              text = text;
+            };
+          };
+          fonts = {
+            names = ["Overpass Nerd Font Propo" "Font Awesome 6 Free"];
+            style = "Heavy";
+          };
+          mode = "dock";
+          position = "top";
+          statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs /home/sheke/.config/i3status-rust/config-default.toml";
+          trayPadding = 4;
+        }
+      ];
       assigns = {
         "1" = [{class = "Alacritty";}];
         "2" = [{class = "Brave";} {class = "firefox";}];
         "4" = [{class = "Spotify";}];
-        "5" = [{class = "terminal64.exe";}];
       };
       workspaceOutputAssign = [
         {
@@ -37,35 +63,35 @@ in {
       ];
       colors = {
         focused = with rosePine; {
-          background = overlay;
-          border = moonHighlightMed;
+          background = surface;
+          border = highlightMed;
           childBorder = subtle;
           indicator = subtle;
-          text = white;
+          text = text;
         };
 
         focusedInactive = with rosePine; {
-          background = moonOverlay;
-          border = moonSurface;
-          childBorder = highlightMed;
-          indicator = highlightMed;
-          text = dawnFoam;
+          background = base;
+          border = highlightLow;
+          childBorder = highlightLow;
+          indicator = highlightLow;
+          text = muted;
         };
 
         unfocused = with rosePine; {
-          background = moonOverlay;
-          border = moonSurface;
-          childBorder = highlightMed;
-          indicator = highlightMed;
-          text = dawnFoam;
+          background = base;
+          border = highlightLow;
+          childBorder = highlightLow;
+          indicator = highlightLow;
+          text = muted;
         };
 
         urgent = with rosePine; {
           background = love;
-          border = dawnLove;
-          childBorder = dawnLove;
-          indicator = dawnLove;
-          text = white;
+          border = love;
+          childBorder = love;
+          indicator = love;
+          text = text;
         };
 
         background = rosePine.overlay;
@@ -82,9 +108,9 @@ in {
         {class = "flameshot";}
       ];
       fonts = {
-        names = ["Noto Sans"];
+        names = ["Overpass Nerd Font Propo"];
         style = "Medium";
-        size = 8.5;
+        size = 9.0;
       };
       gaps.inner = 10;
       keybindings = {
@@ -130,7 +156,7 @@ in {
         # Media
         # "XF86AudioRaiseVolume" = "";
         # "XF86AudioLowerVolume" = "";
-        # "XF86AudioPlay" = "";
+        "XF86AudioPlay" = "exec --no-startup-id playerctl play-pause";
       };
       terminal = "alacritty";
       startup = [
@@ -157,70 +183,48 @@ in {
     };
   };
 
-  services.polybar = {
+  programs.i3status-rust = {
     enable = true;
-    script = "polybar top &";
-    package = pkgs.polybar.override {
-      i3Support = true;
-    };
-    config = {
-      "bar/top" = {
-        monitor = "\${env:MONITOR:HDMI-0}";
-        width = "100%";
-        height = "3%";
-        radius = 0;
-        modules-left = "i3";
-        modules-right = "temperature cpu memory tray date";
-        "font-0" = "${notoFonts}:style=Bold:pixelsize=10;2";
-        "font-1" = "${notoFonts}:style=Bold:pixelsize=10;2";
-        "font-2" = "${fontAwesome}:style=Solid:pixelsize=10;3";
-      };
-
-      "module/cpu" = {
-        type = "internal/cpu";
-        label = "%{T3}%{T-} %percentage%%";
-        label-padding-left = 2;
-        label-padding-right = 2;
-        interval = "0.5";
-      };
-
-      "module/date" = {
-        type = "internal/date";
-        internal = 5;
-        date = "%a %d %b";
-        time = "%H:%M";
-        label = "%{T1}%time%  %date%%{T-}";
-        label-padding = 4;
-      };
-
-      "module/i3" = {
-        type = "internal/i3";
-        show-urgent = true;
-        index-sort = true;
-        enable-scroll = true;
-        wrapping-scroll = false;
-      };
-
-      "module/tray" = {
-        type = "internal/tray";
-        tray-spacing = 10;
-      };
-
-      "module/temperature" = {
-        type = "internal/temperature";
-        thermal-zone = 2;
-        label-padding-right = 2;
-        ramp-0 = "";
-        ramp-1 = "";
-        ramp-2 = "";
-        format = "<ramp> <label>";
-      };
-
-      "module/memory" = {
-        type = "internal/memory";
-        label = "%{T3}%{T-} %gb_used%";
-        label-padding-left = 2;
-        label-padding-right = 4;
+    bars = {
+      default = {
+        blocks = [
+          {
+            alert = 10.0;
+            block = "disk_space";
+            info_type = "available";
+            interval = 60;
+            path = "/";
+            warning = 20.0;
+          }
+          {
+            block = "memory";
+            format = " $icon mem_used_percents ";
+            format_alt = " $icon $swap_used_percents ";
+          }
+          {
+            block = "cpu";
+            interval = 1;
+          }
+          {
+            block = "sound";
+          }
+          {
+            block = "time";
+            format = " $timestamp.datetime(f:'%b %a %d %R') ";
+            interval = 60;
+          }
+        ];
+        settings = {
+          theme = {
+            theme = "solarized-dark";
+            overrides = {
+              idle_bg = "#123456";
+              idle_fg = "#abcdef";
+            };
+          };
+        };
+        icons = "awesome6";
+        theme = "gruvbox-dark";
       };
     };
   };

@@ -62,11 +62,11 @@ in {
           enable = true;
           theme = {
             package = pkgs.rose-pine-gtk-theme;
-            name = "rose-pine-dawn";
+            name = "rose-pine-moon";
           };
           iconTheme = {
             package = pkgs.rose-pine-icon-theme;
-            name = "rose-pine-dawn";
+            name = "rose-pine-moon";
           };
           cursorTheme = {
             package = pkgs.rose-pine-cursor;
