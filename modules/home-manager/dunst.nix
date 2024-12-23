@@ -10,15 +10,19 @@ in {
     };
     settings = with rosePine; {
       global = {
-        browser = "${pkgs.firefox-beta}/bin/firefox-beta";
+        browser = "${pkgs.xdg-utils}/bin/xdg-open";
         dmenu = "${pkgs.rofi}/bin/rofi -dmenu";
         follow = "mouse";
-        format = "%i<b>%s</b>\\n%b";
+        format = "<b>%s</b>\\n%b";
         frame_color = highlightMed;
         frame_width = 2;
         geometry = "500x5-5+30";
+        height = 100;
+        width = 350;
         horizontal_padding = 8;
         icon_position = "left";
+        min_icon_size = 32;
+        max_icon_size = 64;
         line_height = 0;
         markup = "full";
         padding = 8;
@@ -26,8 +30,8 @@ in {
         separator_height = 2;
         transparency = 0;
         word_wrap = true;
-        font = "Overpass Nerd Font Propo";
-        content_alignment = "top";
+        font = "Noto Sans 10";
+        vertical_alignment = "center";
       };
 
       urgency_low = {
