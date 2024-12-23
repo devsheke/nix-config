@@ -1,5 +1,7 @@
 {pkgs, ...}: let
   notosansFont = "Noto Sans";
+  geistmonoFont = "GeistMono Nerd Font Propo";
+  nixBlue = "#7ebae4";
   rosePine = (import ../../../modules/rose-pine.nix {}).main;
 in {
   xsession.windowManager.i3 = rec {
@@ -161,11 +163,12 @@ in {
         background = base;
         font-0 = "Noto Sans:size=9:weight=SemiBold;2";
         font-1 = "Font Awesome 6 Free Solid:size=9:style=Solid;2";
+        font-2 = "${geistmonoFont}:size=12;3";
         foreground = text;
         height = "25px";
         line-size = "2pt";
         modules-center = "date";
-        modules-left = "i3";
+        modules-left = "powermenu i3";
         modules-right = "pulseaudio temperature cpu memory filesystem tray-spacer tray";
         radius = 0;
         width = "100%";
@@ -178,6 +181,40 @@ in {
           modules-right = "pulseaudio temperature cpu memory filesystem";
         };
 
+      "module/powermenu" = let
+        confirm = "%{F${foam}}%{F-} Confirm";
+        cancel = "%{F${rose}}%{F-} Cancel";
+      in {
+        type = "custom/menu";
+        expand-right = true;
+        label-separator = "%{F${base}}|%{F-}";
+        label-separator-padding = 2;
+        menu-0-0 = "%{F${pine}}%{F-} Logout";
+        menu-0-0-exec = "#powermenu.open.1";
+        menu-1-0 = cancel;
+        menu-1-1 = confirm;
+        menu-1-1-exec = "${pkgs.i3}/bin/i3-msg exit";
+        menu-0-1 = "%{F${gold}}%{F-} Lock";
+        menu-0-1-exec = "#powermenu.open.2";
+        menu-2-0 = cancel;
+        menu-2-1 = confirm;
+        menu-2-1-exec = "${pkgs.lightdm}/bin/dm-tool lock";
+        menu-0-2 = "%{F${iris}}%{F-} Reboot";
+        menu-0-2-exec = "#powermenu.open.3";
+        menu-3-0 = cancel;
+        menu-3-1 = confirm;
+        menu-3-1-exec = "${pkgs.systemd}/bin/systemctl reboot";
+        menu-0-3 = "%{F${rose}}%{F-} Poweroff";
+        menu-0-3-exec = "#powermenu.open.4";
+        menu-4-0 = cancel;
+        menu-4-1 = confirm;
+        menu-4-1-exec = "${pkgs.systemd}/bin/systemctl poweroff";
+        label-open = "%{F${nixBlue}}%{T3}%{T-}%{F-}";
+        label-open-padding-left = 4;
+        label-close = "%{F${nixBlue}}%{T3}%{T-}%{F-}";
+        label-close-padding-left = 4;
+      };
+
       "module/date" = {
         type = "custom/script";
         interval = 5;
@@ -187,6 +224,7 @@ in {
 
       "module/i3" = {
         type = "internal/i3";
+        format-margin = 4;
         format = "<label-state> <label-mode>";
         index-sort = "true";
         label-focused = "%index%";
