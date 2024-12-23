@@ -172,6 +172,8 @@ in {
         modules-right = "pulseaudio temperature cpu memory filesystem tray-spacer tray";
         radius = 0;
         width = "100%";
+        scroll-up = "i3-msg workspace next_on_output";
+        scroll-down = "i3-msg workspace prev_on_output";
       };
 
       "bar/bar-2" =
