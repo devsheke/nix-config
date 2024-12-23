@@ -67,6 +67,7 @@ in {
         {class = ".blueman-manager-wrapped";}
         {class = "KeePassXC";}
         {class = "flameshot";}
+        {class = "gsimplecal";}
       ];
       fonts = {
         names = [notosansFont];
@@ -135,6 +136,7 @@ in {
           command = "--no-startup-id flameshot";
           always = true;
         }
+        {command = "nm-applet";}
         {command = "blueman-applet";}
         {command = "keepassxc";}
         {command = "alacritty";}
@@ -177,11 +179,10 @@ in {
         };
 
       "module/date" = {
-        type = "internal/date";
-        internal = 5;
-        date = "%a %b %d";
-        time = "%H:%M";
-        label = "%date%  %time%";
+        type = "custom/script";
+        interval = 5;
+        exec = "${pkgs.coreutils}/bin/coreutils --coreutils-prog=date '+%a %b %d %H:%M'";
+        click-left = "${pkgs.gsimplecal}/bin/gsimplecal &";
       };
 
       "module/i3" = {

@@ -111,6 +111,8 @@ in {
       celluloid
       dconf
       flameshot
+      gsimplecal
+      networkmanagerapplet
       pandoc
       pavucontrol
       stable.wineWowPackages.stable

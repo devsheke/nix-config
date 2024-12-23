@@ -80,7 +80,7 @@ in {
   };
 
   services.picom = {
-    enable = true;
+    enable = false;
     fade = false;
     backend = "glx";
     settings = {
