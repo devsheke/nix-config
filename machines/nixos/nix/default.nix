@@ -81,7 +81,6 @@ in {
         autotiling
         feh
         rofi
-        rofi-power-menu
         xclip
         xorg.xev
       ];

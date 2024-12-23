@@ -10,7 +10,7 @@ in {
     enable = true;
     plugins = [pkgs.rofi-calc pkgs.rofi-emoji];
     terminal = "${pkgs.alacritty}/bin/alacritty";
-    font = "Overpass Nerd Font Propo 12";
+    font = "Noto Sans Medium 11";
     extraConfig = {
       modi = "window,drun,ssh,calc,emoji";
       cycle = true;
@@ -105,7 +105,7 @@ in {
         margin = mkLiteral "0px";
         padding = mkLiteral "0px";
         border = mkLiteral "0px solid";
-        border-radius = mkLiteral "10px";
+        # border-radius = mkLiteral "10px";
         border-color = mkLiteral "@border-colour";
         cursor = "default";
       };
