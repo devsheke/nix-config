@@ -1,52 +1,12 @@
 {pkgs, ...}: let
+  notosansFont = "Noto Sans";
   rosePine = (import ../../../modules/rose-pine.nix {}).main;
 in {
   xsession.windowManager.i3 = rec {
     enable = true;
     config = {
       modifier = "Mod4";
-      bars = with rosePine; [
-        {
-          colors = {
-            activeWorkspace = {
-              background = surface;
-              border = highlightLow;
-              text = muted;
-            };
-            background = base;
-            bindingMode = {
-              background = overlay;
-              border = highlightMed;
-              text = text;
-            };
-            focusedWorkspace = {
-              background = highlightMed;
-              border = highlightHigh;
-              text = text;
-            };
-            inactiveWorkspace = {
-              background = surface;
-              border = highlightLow;
-              text = muted;
-            };
-            statusline = text;
-            urgentWorkspace = {
-              background = love;
-              border = rose;
-              text = text;
-            };
-          };
-          fonts = {
-            names = ["Overpass Nerd Font Propo"];
-            style = "Heavy";
-            size = 9.0;
-          };
-          mode = "dock";
-          position = "top";
-          statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs /home/sheke/.config/i3status-rust/config-default.toml";
-          trayPadding = 4;
-        }
-      ];
+      bars = [];
       assigns = {
         "1" = [{class = "Alacritty";}];
         "2" = [{class = "Brave";} {class = "firefox";}];
@@ -109,7 +69,7 @@ in {
         {class = "flameshot";}
       ];
       fonts = {
-        names = ["Overpass Nerd Font Propo"];
+        names = [notosansFont];
         style = "Medium";
         size = 9.0;
       };
@@ -175,60 +135,138 @@ in {
           command = "--no-startup-id flameshot";
           always = true;
         }
-        {command = "polybar top";}
         {command = "blueman-applet";}
         {command = "keepassxc";}
         {command = "alacritty";}
-        {command = "brave";}
+        {command = "firefox-beta";}
       ];
     };
   };
 
-  programs.i3status-rust = {
+  services.polybar = rec {
     enable = true;
-    bars = {
-      default = {
-        blocks = [
-          {
-            alert = 10.0;
-            block = "disk_space";
-            info_type = "available";
-            interval = 60;
-            path = "/";
-            format = "   $available ";
-            warning = 20.0;
-          }
-          {
-            block = "memory";
-            format = "   $mem_used.eng(w:3) ";
-            format_alt = " $icon $swap_used_percents ";
-          }
-          {
-            block = "cpu";
-            format = "   $utilization ";
-            interval = 1;
-          }
-          {
-            block = "sound";
-          }
-          {
-            block = "time";
-            format = " $timestamp.datetime(f:'%b %a %d %R') ";
-            interval = 60;
-          }
-        ];
-        settings = {
-          theme = {
-            theme = "solarized-dark";
-            overrides = {
-              idle_bg = "#123456";
-              idle_fg = "#abcdef";
-            };
-          };
+    package = pkgs.polybar.override {
+      i3Support = true;
+      pulseSupport = true;
+    };
+    script = ''
+      polybar --reload bar-1 -c ~/.config/polybar/config.ini &
+      polybar --reload bar-2 -c ~/.config/polybar/config.ini &
+    '';
+    config = with rosePine; {
+      "bar/bar-1" = {
+        monitor = "HDMI-0";
+        background = base;
+        font-0 = "Noto Sans:size=9:weight=SemiBold;2";
+        font-1 = "Font Awesome 6 Free Solid:size=9:style=Solid;2";
+        foreground = text;
+        height = "25px";
+        line-size = "2pt";
+        modules-center = "date";
+        modules-left = "i3";
+        modules-right = "pulseaudio temperature cpu memory filesystem tray-spacer tray";
+        radius = 0;
+        width = "100%";
+      };
+
+      "bar/bar-2" =
+        config."bar/bar-1"
+        // {
+          monitor = "VGA-0";
+          modules-right = "pulseaudio temperature cpu memory filesystem";
         };
-        icons = "awesome6";
-        theme = "gruvbox-dark";
+
+      "module/date" = {
+        type = "internal/date";
+        internal = 5;
+        date = "%a %b %d";
+        time = "%H:%M";
+        label = "%date%  %time%";
+      };
+
+      "module/i3" = {
+        type = "internal/i3";
+        format = "<label-state> <label-mode>";
+        index-sort = "true";
+        label-focused = "%index%";
+        label-unfocused = "%index%";
+        label-urgent = "%index%";
+        label-visible = "%index%";
+        label-focused-background = highlightMed;
+        label-focused-underline = pine;
+        label-focused-padding-right = 2;
+        label-focused-padding-left = 2;
+        label-unfocused-padding-right = 2;
+        label-unfocused-padding-left = 2;
+        label-urgent-padding-right = 2;
+        label-urgent-padding-left = 2;
+        label-visible-padding-right = 2;
+        label-visible-padding-left = 2;
+        show-urget = true;
+      };
+
+      "module/temperature" = {
+        type = "internal/temperature";
+        ramp-0 = "%{F${pine}}%{F-}";
+        ramp-1 = "%{F${pine}}%{F-}";
+        ramp-2 = "%{F${rose}}%{F-}";
+        zone-type = "x86_pkg_temp";
+        format = "<ramp> <label>";
+        format-background = overlay;
+        ramp-padding-left = 5;
+        label-padding-right = 2;
+      };
+
+      "module/cpu" = {
+        type = "internal/cpu";
+        label = "%{F${gold}}%{F-} %percentage%%";
+        label-padding-left = 2;
+        label-padding-right = 2;
+        format-background = overlay;
+      };
+
+      "module/memory" = {
+        type = "internal/memory";
+        label = "%{F${love}}%{F-} %gb_used%";
+        label-padding-left = 2;
+        label-padding-right = 2;
+        format-background = overlay;
+      };
+
+      "module/filesystem" = {
+        type = "internal/fs";
+        mount-0 = "/";
+        interval = 10;
+        label-mounted = "%{F${iris}}%{F-} %free%";
+        label-mounted-padding-left = 2;
+        label-mounted-padding-right = 4;
+        format-mounted-background = overlay;
+      };
+
+      "module/pulseaudio" = {
+        type = "internal/pulseaudio";
+        click-right = "pavucontrol";
+        ramp-volume-0 = "%{F${muted}}%{T1} %{T-}%{F-}";
+        ramp-volume-1 = "%{F${foam}}%{T1} %{T-}%{F-}";
+        ramp-volume-2 = "%{F${foam}}%{T1} %{T-}%{F-}";
+        label-muted = "%{F${rose}}%{T1}%{T-}%{F-}";
+        format-volume = "<ramp-volume> <label-volume>";
+        label-volume-padding-right = 4;
+      };
+
+      "module/tray" = {
+        type = "internal/tray";
+        tray-spacing = "8px";
+        format = "<tray>   ";
       };
     };
+
+    extraConfig = with rosePine; ''
+      [module/tray-spacer]
+      type = custom/text
+      label-foreground = ${base}
+      label = "|"
+      label-padding-left = 3
+    '';
   };
 }
