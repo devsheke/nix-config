@@ -2,7 +2,7 @@
 {pkgs, ...}: let
   rose-pine-theme = pkgs.fetchgit {
     url = "https://github.com/rose-pine/qbittorrent";
-    hash = "sha256-KZ0TTzajJ4erpDu3IYEJphYouoCVwQSxR+4Qs+PHNkk=";
+    hash = "sha256-C1i7JiEdtFCSGRRe/6zRomTLkKLdcUqiP969JIuFHxE=";
   };
 
   copyTheme =

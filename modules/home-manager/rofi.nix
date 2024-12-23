@@ -4,7 +4,7 @@
   ...
 }: let
   inherit (config.lib.formats.rasi) mkLiteral;
-  rosePine = (import ../rose-pine.nix {}).moon;
+  rosePine = (import ../rose-pine.nix {}).main;
 in {
   programs.rofi = {
     enable = true;

@@ -1,20 +1,16 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
-  rosePine = (import ../rose-pine.nix {}).moon;
+{pkgs, ...}: let
+  rosePine = (import ../rose-pine.nix {}).main;
 in {
   services.dunst = {
     enable = true;
     iconTheme = {
-      name = "rose-pine-moon";
+      name = "rose-pine";
       package = pkgs.rose-pine-icon-theme;
       size = "32x32";
     };
     settings = with rosePine; {
       global = {
-        browser = "${config.programs.brave.package}/bin/brave -new-tab";
+        browser = "${pkgs.firefox-beta}/bin/firefox-beta";
         dmenu = "${pkgs.rofi}/bin/rofi -dmenu";
         follow = "mouse";
         format = "%i<b>%s</b>\\n%b";
@@ -38,21 +34,21 @@ in {
         background = surface;
         foreground = text;
         frame_color = highlightHigh;
-        timeout = 10;
+        timeout = 5;
       };
 
       urgency_normal = {
         background = surface;
         foreground = text;
         frame_color = highlightHigh;
-        timeout = 15;
+        timeout = 5;
       };
 
       urgency_critical = {
         background = surface;
         foreground = text;
         frame_color = love;
-        timeout = 0;
+        timeout = 5;
       };
 
       shortcuts = {

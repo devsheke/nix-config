@@ -15,6 +15,7 @@ in {
     (homeModules + "/bat.nix")
     (homeModules + "/dunst.nix")
     (homeModules + "/nvim.nix")
+    (homeModules + "/rose-pine-qbittorrent.nix")
     (homeModules + "/rofi.nix")
     (homeModules + "/shell.nix")
     (homeModules + "/tmux.nix")

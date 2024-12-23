@@ -61,15 +61,15 @@ in {
           enable = true;
           theme = {
             package = pkgs.rose-pine-gtk-theme;
-            name = "rose-pine-moon";
+            name = "rose-pine";
           };
           iconTheme = {
             package = pkgs.rose-pine-icon-theme;
-            name = "rose-pine-moon";
+            name = "rose-pine";
           };
           cursorTheme = {
             package = pkgs.rose-pine-cursor;
-            name = "BreezeX-RosePineDawn-Linux";
+            name = "BreezeX-RosePine-Linux";
           };
         };
       };
@@ -114,11 +114,22 @@ in {
       pandoc
       pavucontrol
       stable.wineWowPackages.stable
-      xfce.thunar
+      xarchiver
     ]
     ++ packages.common
     ++ packages.devTools
     ++ packages.linuxEssentials;
+
+  programs.xfconf.enable = true;
+  services.gvfs.enable = true;
+  services.tumbler.enable = true;
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs.xfce; [
+      thunar-archive-plugin
+      thunar-volman
+    ];
+  };
 
   users.users.sheke = {
     isNormalUser = true;

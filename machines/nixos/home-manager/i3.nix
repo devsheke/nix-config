@@ -20,7 +20,7 @@ in {
               text = text;
             };
             focusedWorkspace = {
-              background = overlay;
+              background = highlightMed;
               border = highlightHigh;
               text = text;
             };
@@ -37,8 +37,9 @@ in {
             };
           };
           fonts = {
-            names = ["Overpass Nerd Font Propo" "Font Awesome 6 Free"];
+            names = ["Overpass Nerd Font Propo"];
             style = "Heavy";
+            size = 9.0;
           };
           mode = "dock";
           position = "top";
@@ -194,15 +195,17 @@ in {
             info_type = "available";
             interval = 60;
             path = "/";
+            format = "   $available ";
             warning = 20.0;
           }
           {
             block = "memory";
-            format = " $icon mem_used_percents ";
+            format = "   $mem_used.eng(w:3) ";
             format_alt = " $icon $swap_used_percents ";
           }
           {
             block = "cpu";
+            format = "   $utilization ";
             interval = 1;
           }
           {

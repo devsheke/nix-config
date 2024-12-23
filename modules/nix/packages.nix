@@ -9,6 +9,7 @@
     inetutils
     killall
     openssl
+    p7zip
     ripgrep
     unzip
     zip
@@ -27,7 +28,7 @@
 
   linuxEssentials = with pkgs; [
     alacritty
-    brave
+    firefox-beta
     keepassxc
     onlyoffice-bin_latest
     openvpn

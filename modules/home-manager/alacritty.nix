@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  rosePine = (import ../../modules/rose-pine.nix {}).moon;
+  rosePine = (import ../../modules/rose-pine.nix {}).main;
 in {
   programs.alacritty = with pkgs; {
     enable = true;

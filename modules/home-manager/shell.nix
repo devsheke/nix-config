@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  rosePine = (import ../rose-pine.nix {}).moon;
+  rosePine = (import ../rose-pine.nix {}).main;
 in {
   programs.zsh = {
     enable = true;
@@ -25,7 +25,7 @@ in {
     '';
     oh-my-zsh = {
       enable = true;
-      plugins = ["gh" "git" "golang" "zsh-autosuggestions"];
+      plugins = ["gh" "git" "golang"];
     };
     shellAliases = {
       "nix-rebuild" = "sudo nixos rebuild ~/.config/nix-config";
