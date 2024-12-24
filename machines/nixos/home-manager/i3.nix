@@ -169,7 +169,7 @@ in {
         line-size = "2pt";
         modules-center = "date";
         modules-left = "powermenu i3";
-        modules-right = "pulseaudio temperature cpu memory filesystem tray-spacer tray";
+        modules-right = "pulseaudio temperature cpu memory tray-spacer tray";
         radius = 0;
         width = "100%";
         scroll-up = "i3-msg workspace next_on_output";
@@ -180,7 +180,7 @@ in {
         config."bar/bar-1"
         // {
           monitor = "VGA-0";
-          modules-right = "pulseaudio temperature cpu memory filesystem";
+          modules-right = "pulseaudio temperature cpu memory";
         };
 
       "module/powermenu" = let
@@ -248,12 +248,12 @@ in {
 
       "module/temperature" = {
         type = "internal/temperature";
-        ramp-0 = "%{F${pine}}%{F-}";
-        ramp-1 = "%{F${pine}}%{F-}";
+        ramp-0 = "%{F${iris}}%{F-}";
+        ramp-1 = "%{F${iris}}%{F-}";
         ramp-2 = "%{F${rose}}%{F-}";
         zone-type = "x86_pkg_temp";
         format = "<ramp> <label>";
-        format-background = overlay;
+        format-background = surface;
         ramp-padding-left = 5;
         label-padding-right = 2;
       };
@@ -263,15 +263,15 @@ in {
         label = "%{F${gold}}%{F-} %percentage%%";
         label-padding-left = 2;
         label-padding-right = 2;
-        format-background = overlay;
+        format-background = surface;
       };
 
       "module/memory" = {
         type = "internal/memory";
         label = "%{F${love}}%{F-} %gb_used%";
         label-padding-left = 2;
-        label-padding-right = 2;
-        format-background = overlay;
+        label-padding-right = 4;
+        format-background = surface;
       };
 
       "module/filesystem" = {
@@ -281,18 +281,22 @@ in {
         label-mounted = "%{F${iris}}%{F-} %free%";
         label-mounted-padding-left = 2;
         label-mounted-padding-right = 4;
-        format-mounted-background = overlay;
+        format-mounted-background = surface;
       };
 
       "module/pulseaudio" = {
-        type = "internal/pulseaudio";
         click-right = "pavucontrol";
-        ramp-volume-0 = "%{F${muted}}%{T1} %{T-}%{F-}";
-        ramp-volume-1 = "%{F${foam}}%{T1} %{T-}%{F-}";
-        ramp-volume-2 = "%{F${foam}}%{T1} %{T-}%{F-}";
-        label-muted = "%{F${rose}}%{T1}%{T-}%{F-}";
-        format-volume = "<ramp-volume> <label-volume>";
-        label-volume-padding-right = 4;
+        format-volume = "<ramp-volume><label-volume>";
+        label-muted = "\"%{F${surface}}%{B${rose}}%{T1}      %{T-}%{B-}%{F-}%{B${surface}}   Muted   %{B-}\"";
+        format-muted-margin = 8;
+        ramp-volume-0 = "%{B${muted}}%{T1}      %{T-}%{B-}";
+        ramp-volume-1 = "%{B${foam}}%{T1}      %{T-}%{B-}";
+        ramp-volume-2 = "%{B${foam}}%{T1}      %{T-}%{B-}";
+        ramp-volume-foreground = surface;
+        type = "internal/pulseaudio";
+        label-volume-padding = 3;
+        label-volume-background = surface;
+        format-volume-margin = 8;
       };
 
       "module/tray" = {
