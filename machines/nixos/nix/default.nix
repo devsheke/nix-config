@@ -46,44 +46,27 @@ in {
   i18n.defaultLocale = "en_US.UTF-8";
 
   # Enable the X11 windowing system.
-  services.displayManager.defaultSession = "none+i3";
   services.xserver = {
     enable = true;
-    desktopManager = {
-      xterm.enable = false;
-      wallpaper.mode = "fill";
-    };
+    desktopManager.xterm.enable = false;
     displayManager = {
       lightdm = {
         enable = true;
         background = "/usr/share/backgrounds/background-image.jpg";
-        greeters.gtk = {
-          enable = true;
-          theme = {
-            package = pkgs.rose-pine-gtk-theme;
-            name = "rose-pine";
-          };
-          iconTheme = {
-            package = pkgs.rose-pine-icon-theme;
-            name = "rose-pine";
-          };
-          cursorTheme = {
-            package = pkgs.rose-pine-cursor;
-            name = "BreezeX-RosePine-Linux";
-          };
-        };
+        greeters.gtk.enable = true;
       };
     };
-    windowManager.i3 = {
+
+    windowManager.dwm = {
       enable = true;
-      extraPackages = with pkgs; [
-        arandr
-        autotiling
-        feh
-        rofi
-        xclip
-        xorg.xev
-      ];
+      package = pkgs.dwm.overrideAttrs {
+        src = pkgs.fetchFromGitHub {
+          owner = "devsheke";
+          repo = "dwm";
+          rev = "d2503155ebabd7558099f5a20385ad8166c707d2";
+          hash = "sha256-7MyshCCaPZu2pz8oLd/Q5dpbo683hTDRUnHD14PDcow=";
+        };
+      };
     };
   };
 
@@ -105,17 +88,17 @@ in {
 
   environment.systemPackages = with pkgs;
     [
+      arandr
       bc
       blueman
       celluloid
       dconf
-      flameshot
-      gsimplecal
+      feh
       networkmanagerapplet
-      pandoc
       pavucontrol
-      stable.wineWowPackages.stable
-      xarchiver
+      rofi
+      xclip
+      xorg.xev
     ]
     ++ packages.common
     ++ packages.devTools
@@ -144,14 +127,14 @@ in {
     noto-fonts-cjk-sans
     noto-fonts-lgc-plus
     font-awesome
-    (nerdfonts.override {fonts = ["GeistMono" "Overpass"];})
+    (nerdfonts.override {fonts = ["GeistMono" "JetBrainsMono" "Meslo"];})
   ];
 
   fonts.fontconfig = {
     defaultFonts = {
       serif = ["Noto Serif"];
       sansSerif = ["Noto Sans"];
-      monospace = ["GeistMono Nerd Font" "OverpassM Nerd Font"];
+      monospace = ["JetBrainsMono Nerd Font" "GeistMono Nerd Font"];
       emoji = ["Noto Color Emoji"];
     };
   };
