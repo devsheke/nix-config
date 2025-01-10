@@ -10,7 +10,6 @@
   };
 in {
   imports = [
-    ./i3.nix
     (homeModules + "/alacritty.nix")
     (homeModules + "/bat.nix")
     (homeModules + "/dunst.nix")
