@@ -13,7 +13,7 @@ static const int showbar = 1;
 static const int topbar = 1;
 // horizontal and vertical padding for statusbar.
 static const int horizpadbar = 2;
-static const int vertpadbar = 0;
+static const int vertpadbar = 10;
 
 // gap config
 // horiz inner gap bw windows
@@ -40,7 +40,9 @@ static const unsigned int ulinevoffset = 0;
 static const int ulineall = 0;
 
 // colors and fonts
-static const char *fonts[] = {"monospace:size=10"};
+static const char *fonts[] = {
+    "GeistMono Nerd Font Propo:style:medium:size=12",
+};
 static const char col_gray1[] = "#222222";
 static const char col_gray2[] = "#444444";
 static const char col_gray3[] = "#bbbbbb";
@@ -57,7 +59,7 @@ static const char *colors[][3] = {
 /* ------------------------ Tagging ------------------------ */
 
 // tag labels.
-static const char *tags[] = {"", "", "", "", "󰃖", ""};
+static const char *tags[] = {"", "", "", "", "󰃖", ""};
 // tag rules.
 static const Rule rules[] = {
     /* xprop(1):
@@ -66,12 +68,17 @@ static const Rule rules[] = {
      */
     /* class      instance    title       tags mask     isfloating   monitor */
     {"alacritty", NULL, NULL, 1 << 0, 0, -1},
-    {"Firefox", NULL, NULL, 1 << 1, 0, -1},
-    {"Spotify", NULL, NULL, 1 << 2, 1, -1},
+    {".arandr-wrapped", NULL, NULL, 0, 1, -1},
+    {".blueman-manager-wrapped", NULL, NULL, 0, 1, -1},
     {"Celluloid", NULL, NULL, 1 << 2, 1, -1},
+    {"firefox", "Navigator", NULL, 1 << 1, 0, -1},
+    {"KeePassXC", NULL, NULL, 0, 1, -1},
+    {"Nvidia-settings", NULL, NULL, 0, 1, -1},
+    {"pavucontrol", NULL, NULL, 0, 1, -1},
+    {"qBittorrent", NULL, NULL, 0, 1, -1},
+    {"Spotify", NULL, NULL, 1 << 2, 1, -1},
     {"Thunar", NULL, NULL, 0, 1, -1},
-    {"Thunderbird", NULL, NULL, 1 << 3, 1, -1},
-};
+    {"Thunderbird", NULL, NULL, 1 << 3, 1, -1}};
 
 /* ========================================================= */
 
@@ -114,7 +121,7 @@ static const Key keys[] = {
     {MODKEY, XK_space, spawn, SHCMD("rofi -show drun")},
     {MODKEY, XK_c, spawn, SHCMD("rofi -show calc")},
     {MODKEY, XK_Return, spawn, SHCMD("alacritty")},
-    {MODKEY | ControlMask, XK_l, spawn, SHCMD("dm-tool lock")},
+    {ControlMask, XK_l, spawn, SHCMD("dm-tool lock")},
     {MODKEY, XK_j, focusstack, {.i = +1}},
     {MODKEY, XK_k, focusstack, {.i = -1}},
     {MODKEY, XK_i, incnmaster, {.i = +1}},
