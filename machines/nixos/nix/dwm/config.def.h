@@ -4,7 +4,7 @@
 /*  --------------------- Appearance --------------------- */
 
 // border pixel of windows.
-static const unsigned int borderpx = 1;
+static const unsigned int borderpx = 2;
 // snap pixel.
 static const unsigned int snap = 32;
 // 0 means no bar.
@@ -28,8 +28,7 @@ static const unsigned int gappov = 12;
 static int smartgaps = 0;
 
 // systray config
-// 0: sloppy systray follows selected monitor, >0: pin systray to monitor
-// X.
+// 0: sloppy systray follows selected monitor, >0: pin systray to monitor X.
 static const unsigned int systraypinning = 0;
 // 0: systray in the right corner, >0: systray on left of status text.
 static const unsigned int systrayonleft = 0;
@@ -50,24 +49,35 @@ static const unsigned int ulinevoffset = 0;
 // 1 to show underline on all tags, 0 for just active ones.
 static const int ulineall = 0;
 
+// colorful tags
+static const unsigned int colorfultag = 1;
+
 // colors and fonts
+#include "rose_pine.h"
+
 static const char *fonts[] = {
-    "GeistMono Nerd Font Propo:style:medium:size=12",
+    "Overpass Nerd Font Propo:style=SemiBold:size=12",
 };
-static const char col_gray1[] = "#222222";
-static const char col_gray2[] = "#444444";
-static const char col_gray3[] = "#bbbbbb";
-static const char col_gray4[] = "#eeeeee";
-static const char col_cyan[] = "#005577";
+
 static const char *colors[][3] = {
     /*               fg         bg         border   */
-    [SchemeNorm] = {col_gray3, col_gray1, col_gray2},
-    [SchemeSel] = {col_gray4, col_cyan, col_cyan},
+    [SchemeNorm] = {text, base, highlight_med},
+    [SchemeSel] = {text, overlay, subtle},
+    [SchemeTag] = {text, base, highlight_med},
+    [SchemeTag1] = {gold, surface, base},
+    [SchemeTag2] = {love, surface, base},
+    [SchemeTag3] = {foam, surface, base},
+    [SchemeTag4] = {iris, surface, base},
+    [SchemeTag5] = {pine, surface, base},
+    [SchemeTag6] = {text, surface, base},
+    [SchemeLayout] = {rose, base, base},
 };
 
 /* ========================================================= */
 
 /* ------------------------ Tagging ------------------------ */
+static const int tagschemes[] = {SchemeTag1, SchemeTag2, SchemeTag3,
+                                 SchemeTag4, SchemeTag5, SchemeTag6};
 
 // tag labels.
 static const char *tags[] = {"", "", "", "", "󰃖", ""};
@@ -78,7 +88,7 @@ static const Rule rules[] = {
      *  WM_NAME(STRING) = title
      */
     /* class      instance    title       tags mask     isfloating   monitor */
-    {"alacritty", NULL, NULL, 1 << 0, 0, -1},
+    {"Alacritty", NULL, NULL, 1 << 0, 0, -1},
     {".arandr-wrapped", NULL, NULL, 0, 1, -1},
     {".blueman-manager-wrapped", NULL, NULL, 0, 1, -1},
     {"Celluloid", NULL, NULL, 1 << 2, 1, -1},

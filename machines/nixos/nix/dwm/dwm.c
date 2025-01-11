@@ -74,7 +74,18 @@
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
-enum { SchemeNorm, SchemeSel };                  /* color schemes */
+enum {
+  SchemeNorm,
+  SchemeSel,
+  SchemeTag,
+  SchemeTag1,
+  SchemeTag2,
+  SchemeTag3,
+  SchemeTag4,
+  SchemeTag5,
+  SchemeTag6,
+  SchemeLayout,
+}; /* color schemes */
 enum {
   NetSupported,
   NetWMName,
@@ -177,6 +188,7 @@ struct Monitor {
   Monitor *next;
   Window barwin;
   const Layout *lt[2];
+  unsigned int colorfultag;
 };
 
 typedef struct {
@@ -272,6 +284,7 @@ static Monitor *systraytomon(Monitor *m);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void togglebar(const Arg *arg);
+static void togglecolorfultag();
 static void togglefloating(const Arg *arg);
 static void toggletag(const Arg *arg);
 static void toggleview(const Arg *arg);
@@ -749,6 +762,7 @@ Monitor *createmon(void) {
   m->nmaster = nmaster;
   m->showbar = showbar;
   m->topbar = topbar;
+  m->colorfultag = colorfultag ? colorfultag : 0;
   m->gappih = gappih;
   m->gappiv = gappiv;
   m->gappoh = gappoh;
@@ -947,8 +961,9 @@ void drawbar(Monitor *m) {
   x = 0;
   for (i = 0; i < LENGTH(tags); i++) {
     w = TEXTW(tags[i]);
-    drw_setscheme(
-        drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
+    // add color to tags
+    drw_setscheme(drw, scheme[m->colorfultag ? tagschemes[i] : SchemeSel]);
+
     drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
     if (ulineall ||
         m->tagset[m->seltags] &
@@ -963,7 +978,7 @@ void drawbar(Monitor *m) {
     x += w;
   }
   w = TEXTW(m->ltsymbol);
-  drw_setscheme(drw, scheme[SchemeNorm]);
+  drw_setscheme(drw, scheme[SchemeLayout]);
   x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
   if ((w = m->ww - tw - stw - x) > bh) {
@@ -2004,6 +2019,11 @@ void togglebar(const Arg *arg) {
     XConfigureWindow(dpy, systray->win, CWY, &wc);
   }
   arrange(selmon);
+}
+
+void togglecolorfultag() {
+  selmon->colorfultag = !selmon->colorfultag;
+  drawbar(selmon);
 }
 
 void togglefloating(const Arg *arg) {
