@@ -60,12 +60,7 @@ in {
     windowManager.dwm = {
       enable = true;
       package = pkgs.dwm.overrideAttrs {
-        src = pkgs.fetchFromGitHub {
-          owner = "devsheke";
-          repo = "dwm";
-          rev = "d2503155ebabd7558099f5a20385ad8166c707d2";
-          hash = "sha256-7MyshCCaPZu2pz8oLd/Q5dpbo683hTDRUnHD14PDcow=";
-        };
+        src = ./dwm;
       };
     };
   };
@@ -88,6 +83,7 @@ in {
 
   environment.systemPackages = with pkgs;
     [
+      dash
       arandr
       bc
       blueman
