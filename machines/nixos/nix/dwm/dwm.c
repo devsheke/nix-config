@@ -1146,7 +1146,7 @@ unsigned int getsystraywidth() {
   unsigned int w = 0;
   Client *i;
   if (showsystray)
-    for (i = systray->icons; i; w = i->w + systrayspacing, i = i->next)
+    for (i = systray->icons; i; w += i->w + systrayspacing, i = i->next)
       ;
   return w ? w + systrayspacing : 1;
 }
