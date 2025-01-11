@@ -127,14 +127,14 @@ in {
     noto-fonts-cjk-sans
     noto-fonts-lgc-plus
     font-awesome
-    (nerdfonts.override {fonts = ["GeistMono" "JetBrainsMono" "Meslo"];})
+    (nerdfonts.override {fonts = ["GeistMono" "Overpass"];})
   ];
 
   fonts.fontconfig = {
     defaultFonts = {
       serif = ["Noto Serif"];
       sansSerif = ["Noto Sans"];
-      monospace = ["JetBrainsMono Nerd Font" "GeistMono Nerd Font"];
+      monospace = ["GeistMono Nerd Font" "OverpassM Nerd Font"];
       emoji = ["Noto Color Emoji"];
     };
   };

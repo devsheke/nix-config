@@ -10,7 +10,7 @@ in {
     enable = true;
     plugins = [pkgs.rofi-calc pkgs.rofi-emoji];
     terminal = "${pkgs.alacritty}/bin/alacritty";
-    font = "Noto Sans Medium 11";
+    font = "Overpass Nerd Font Propo 12";
     extraConfig = {
       modi = "window,drun,ssh,calc,emoji";
       cycle = true;

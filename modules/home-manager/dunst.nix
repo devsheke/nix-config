@@ -30,7 +30,7 @@ in {
         separator_height = 2;
         transparency = 0;
         word_wrap = true;
-        font = "Noto Sans 10";
+        font = "Overpass Nerd Font Propo 12";
         vertical_alignment = "center";
       };
 
