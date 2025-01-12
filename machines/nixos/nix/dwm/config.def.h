@@ -13,17 +13,17 @@ static const int showbar = 1;
 static const int topbar = 1;
 // horizontal and vertical padding for statusbar.
 static const int horizpadbar = 2;
-static const int vertpadbar = 10;
+static const int vertpadbar = 12;
 
 // gap config
 // horiz inner gap bw windows
-static const unsigned int gappih = 12;
+static const unsigned int gappih = 10;
 // vert inner gap bw windows
-static const unsigned int gappiv = 12;
+static const unsigned int gappiv = 10;
 // horiz outer gap bw windows and screen edge
-static const unsigned int gappoh = 12;
+static const unsigned int gappoh = 10;
 // vert outer gap bw windows and screen edge
-static const unsigned int gappov = 12;
+static const unsigned int gappov = 10;
 // 1 means no outer gap when there is only one window
 static int smartgaps = 0;
 
@@ -144,6 +144,9 @@ static const Key keys[] = {
     {MODKEY, XK_space, spawn, SHCMD("rofi -show drun")},
     {MODKEY, XK_c, spawn, SHCMD("rofi -show calc")},
     {MODKEY, XK_Return, spawn, SHCMD("alacritty")},
+    {MODKEY, XK_w, spawn, SHCMD("firefox-beta")},
+    {MODKEY, XK_d, spawn, SHCMD("thunar")},
+    {MODKEY, XK_v, spawn, SHCMD("pavucontrol")},
     {ControlMask, XK_l, spawn, SHCMD("dm-tool lock")},
     {MODKEY, XK_j, focusstack, {.i = +1}},
     {MODKEY, XK_k, focusstack, {.i = -1}},
