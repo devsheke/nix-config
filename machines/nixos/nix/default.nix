@@ -49,19 +49,32 @@ in {
   services.xserver = {
     enable = true;
     desktopManager.xterm.enable = false;
-    displayManager = {
-      lightdm = {
-        enable = true;
-        background = "/usr/share/backgrounds/background-image.jpg";
-        greeters.gtk.enable = true;
+  };
+
+  services.xserver.displayManager.lightdm = {
+    enable = true;
+    background = "/usr/share/backgrounds/background-image.jpg";
+    greeters.gtk = {
+      enable = true;
+      theme = {
+        package = pkgs.rose-pine-gtk-theme;
+        name = "rose-pine";
+      };
+      iconTheme = {
+        package = pkgs.rose-pine-icon-theme;
+        name = "rose-pine";
+      };
+      cursorTheme = {
+        package = pkgs.rose-pine-cursor;
+        name = "BreezeX-RosePine-Linux";
       };
     };
+  };
 
-    windowManager.dwm = {
-      enable = true;
-      package = pkgs.dwm.overrideAttrs {
-        src = ./dwm;
-      };
+  services.xserver.windowManager.dwm = {
+    enable = true;
+    package = pkgs.dwm.overrideAttrs {
+      src = ./dwm;
     };
   };
 
@@ -83,11 +96,11 @@ in {
 
   environment.systemPackages = with pkgs;
     [
-      dash
       arandr
       bc
       blueman
       celluloid
+      dash
       dconf
       feh
       networkmanagerapplet
@@ -135,9 +148,70 @@ in {
     };
   };
 
+  xdg.portal = {
+    enable = true;
+    config.common.default = "*";
+    extraPortals = [pkgs.xdg-desktop-portal-gtk];
+  };
+
   services.openssh.enable = true;
   services.playerctld.enable = true;
   virtualisation.docker.enable = true;
+
+  systemd.user.services."dwm-startup" = {
+    enable = true;
+    description = "A startup script for dwm";
+    path = with pkgs; [blueman dash feh keepassxc networkmanagerapplet xorg.xrandr];
+    wantedBy = ["graphical-session.target"];
+    partOf = ["graphical-session.target"];
+    script = ''
+      # configure screen outputs.
+      /home/sheke/.screenlayout/default.sh
+
+      # configure wallpaper.
+      /home/sheke/.fehbg
+
+      # start dwm bar.
+      dash /home/sheke/.config/scripts/bar.sh &
+
+      # start tray items.
+      blueman-applet &
+      nm-applet &
+      keepassxc &
+    '';
+  };
+
+  # Enable OpenGL
+  hardware.graphics.enable = true;
+
+  hardware.nvidia = {
+    # Modesetting is required.
+    modesetting.enable = true;
+
+    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+    powerManagement.enable = false;
+
+    # Fine-grained power management. Turns off GPU when not in use.
+    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+    # powerManagement.finegrained = false;
+
+    # Use the NVidia open source kernel module (not to be confused with the
+    # independent third-party "nouveau" open source driver).
+    open = false;
+
+    # Enable the Nvidia settings menu, accessible via `nvidia-settings`.
+    nvidiaSettings = true;
+
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+  };
+
+  services.xserver.videoDrivers = ["nvidia"];
+  # Options to fix screen tearing issues
+  services.xserver.screenSection = ''
+    Option       "metamodes" "nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
+    Option       "AllowIndirectGLXProtocol" "off"
+    Option       "TripleBuffer" "on"
+  '';
 
   system.stateVersion = "24.05"; # Don't change this!
 }
