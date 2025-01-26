@@ -21,21 +21,20 @@
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
 
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/d70feea8-3d1d-4543-acf8-6269f54503d3";
+    fsType = "ext4";
+  };
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/d70feea8-3d1d-4543-acf8-6269f54503d3";
-      fsType = "ext4";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/59C6-EF62";
+    fsType = "vfat";
+    options = ["fmask=0077" "dmask=0077"];
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/59C6-EF62";
-      fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
-    };
-
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/7c7c0b14-a98c-4fed-b5cc-5a10cf54fd7f"; }
-    ];
+  swapDevices = [
+    {device = "/dev/disk/by-uuid/7c7c0b14-a98c-4fed-b5cc-5a10cf54fd7f";}
+  ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -46,36 +45,4 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
-  # Enable OpenGL
-  hardware.graphics.enable = true;
-
-  hardware.nvidia = {
-    # Modesetting is required.
-    modesetting.enable = true;
-
-    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-    powerManagement.enable = false;
-
-    # Fine-grained power management. Turns off GPU when not in use.
-    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-    # powerManagement.finegrained = false;
-
-    # Use the NVidia open source kernel module (not to be confused with the
-    # independent third-party "nouveau" open source driver).
-    open = false;
-
-    # Enable the Nvidia settings menu, accessible via `nvidia-settings`.
-    nvidiaSettings = true;
-
-    package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
-  };
-
-  services.xserver.videoDrivers = ["nvidia"];
-  # Options to fix screen tearing issues
-  services.xserver.screenSection = ''
-    Option       "metamodes" "nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
-    Option       "AllowIndirectGLXProtocol" "off"
-    Option       "TripleBuffer" "on"
-  '';
 }

@@ -10,7 +10,7 @@
   };
 in {
   imports = [
-    ./i3.nix
+    ./picom.nix
     (homeModules + "/alacritty.nix")
     (homeModules + "/bat.nix")
     (homeModules + "/dunst.nix")
@@ -72,19 +72,10 @@ in {
 
   qt = {
     enable = true;
-    platformTheme.name = "gtk";
+    platformTheme.name = "adwaita";
     style = {
-      name = "rose-pine";
-      package = pkgs.rose-pine-gtk-theme;
-    };
-  };
-
-  services.picom = {
-    enable = false;
-    fade = false;
-    backend = "glx";
-    settings = {
-      log-file = "/tmp/picom.log";
+      name = "adwaita-dark";
+      package = pkgs.adwaita-qt;
     };
   };
 
