@@ -76,13 +76,24 @@ in {
     package = pkgs.dwm.overrideAttrs {
       src = ./dwm;
     };
+    extraSessionCommands = ''
+      /home/sheke/.screenlayout/default.sh
+
+      /home/sheke/.fehbg
+
+      dash /home/sheke/.config/scripts/bar.sh &
+
+      blueman-applet &
+      nm-applet &
+      keepassxc &
+    '';
   };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
     pulse.enable = true;
@@ -103,6 +114,7 @@ in {
       dash
       dconf
       feh
+      imlib2
       networkmanagerapplet
       pavucontrol
       rofi
@@ -130,14 +142,15 @@ in {
     shell = pkgs.zsh;
   };
 
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-emoji
-    noto-fonts-cjk-sans
-    noto-fonts-lgc-plus
-    font-awesome
-    (nerdfonts.override {fonts = ["GeistMono" "Overpass"];})
-  ];
+  fonts.packages = with pkgs;
+    [
+      noto-fonts
+      noto-fonts-emoji
+      noto-fonts-cjk-sans
+      noto-fonts-lgc-plus
+      font-awesome
+    ]
+    ++ (with pkgs.nerd-fonts; [geist-mono overpass]);
 
   fonts.fontconfig = {
     defaultFonts = {
@@ -158,28 +171,28 @@ in {
   services.playerctld.enable = true;
   virtualisation.docker.enable = true;
 
-  systemd.user.services."dwm-startup" = {
-    enable = true;
-    description = "A startup script for dwm";
-    path = with pkgs; [blueman dash feh keepassxc networkmanagerapplet xorg.xrandr];
-    wantedBy = ["graphical-session.target"];
-    partOf = ["graphical-session.target"];
-    script = ''
-      # configure screen outputs.
-      /home/sheke/.screenlayout/default.sh
-
-      # configure wallpaper.
-      /home/sheke/.fehbg
-
-      # start dwm bar.
-      dash /home/sheke/.config/scripts/bar.sh &
-
-      # start tray items.
-      blueman-applet &
-      nm-applet &
-      keepassxc &
-    '';
-  };
+  # systemd.user.services."dwm-startup" = {
+  #   enable = true;
+  #   description = "A startup script for dwm";
+  #   path = with pkgs; [blueman dash feh keepassxc networkmanagerapplet xorg.xrandr];
+  #   wantedBy = ["graphical-session.target"];
+  #   partOf = ["graphical-session.target"];
+  #   script = ''
+  #     # configure screen outputs.
+  #     /home/sheke/.screenlayout/default.sh
+  #
+  #     # configure wallpaper.
+  #     /home/sheke/.fehbg
+  #
+  #     # start dwm bar.
+  #     dash /home/sheke/.config/scripts/bar.sh &
+  #
+  #     # start tray items.
+  #     blueman-applet &
+  #     nm-applet &
+  #     keepassxc &
+  #   '';
+  # };
 
   # Enable OpenGL
   hardware.graphics.enable = true;
