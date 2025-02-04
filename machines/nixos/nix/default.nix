@@ -118,6 +118,7 @@ in {
       networkmanagerapplet
       pavucontrol
       rofi
+      tor-browser
       xclip
       xorg.xev
     ]
@@ -163,7 +164,7 @@ in {
 
   xdg.portal = {
     enable = true;
-    config.common.default = "*";
+    config.common.default = "gtk";
     extraPortals = [pkgs.xdg-desktop-portal-gtk];
   };
 
@@ -218,6 +219,7 @@ in {
     package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
   };
 
+  services.flatpak.enable = true;
   services.xserver.videoDrivers = ["nvidia"];
   # Options to fix screen tearing issues
   services.xserver.screenSection = ''
