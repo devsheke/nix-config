@@ -93,13 +93,15 @@ static const Rule rules[] = {
     {".blueman-manager-wrapped", NULL, NULL, 0, 1, -1},
     {"Celluloid", NULL, NULL, 1 << 2, 1, -1},
     {"firefox", "Navigator", NULL, 1 << 1, 0, -1},
+    {"chromium-browser", "Chromium-browser", NULL, 1 << 1, 0, -1},
     {"KeePassXC", NULL, NULL, 0, 1, -1},
     {"Nvidia-settings", NULL, NULL, 0, 1, -1},
     {"pavucontrol", NULL, NULL, 0, 1, -1},
     {"qBittorrent", NULL, NULL, 0, 1, -1},
     {"Spotify", NULL, NULL, 1 << 2, 1, -1},
     {"Thunar", NULL, NULL, 0, 1, -1},
-    {"Thunderbird", NULL, NULL, 1 << 3, 1, -1}};
+    {"Thunderbird", NULL, NULL, 1 << 3, 1, -1},
+    {"zen", "Navigator", NULL, 1 << 1, 0, -1}};
 
 /* ========================================================= */
 
@@ -147,7 +149,7 @@ static const Key keys[] = {
     {MODKEY, XK_w, spawn, SHCMD("firefox-beta")},
     {MODKEY, XK_d, spawn, SHCMD("thunar")},
     {MODKEY, XK_v, spawn, SHCMD("pavucontrol")},
-    {ControlMask, XK_l, spawn, SHCMD("dm-tool lock")},
+    {ControlMask | ShiftMask, XK_l, spawn, SHCMD("dm-tool lock")},
     {MODKEY, XK_j, focusstack, {.i = +1}},
     {MODKEY, XK_k, focusstack, {.i = -1}},
     {MODKEY, XK_i, incnmaster, {.i = +1}},
