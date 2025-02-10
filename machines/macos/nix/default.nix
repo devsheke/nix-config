@@ -35,7 +35,8 @@ in {
     ]));
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override {fonts = ["GeistMono" "Overpass"];})
+    nerd-fonts.geist-mono
+    nerd-fonts.overpass
   ];
 
   services.nix-daemon.enable = true;
