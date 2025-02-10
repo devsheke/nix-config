@@ -4,6 +4,7 @@
     arp-scan
     btop
     cloc
+    chafa
     dnsutils
     home-manager
     inetutils
@@ -19,11 +20,13 @@
     flyctl
     gcc
     gnumake
+    lazygit
     luajit
     neovim
     nil
     python3Minimal
     taplo
+    vimPlugins.nvim-treesitter-parsers.norg
   ];
 
   linuxEssentials = with pkgs; [
