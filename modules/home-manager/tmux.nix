@@ -5,15 +5,16 @@
     baseIndex = 1;
     clock24 = true;
     disableConfirmationPrompt = true;
-    historyLimit = 50000;
+    historyLimit = 10000;
     mouse = true;
     shell = "${pkgs.zsh}/bin/zsh";
-    terminal = "screen-256color";
+    terminal = "xterm-256color";
     plugins = with pkgs; [
-      {plugin = tmuxPlugins.sensible;}
       {plugin = tmuxPlugins.resurrect;}
       {plugin = tmuxPlugins.pain-control;}
       {plugin = tmuxPlugins.fuzzback;}
+      {plugin = tmuxPlugins.sensible;}
+      {plugin = tmuxPlugins.sessionist;}
       {
         plugin = tmuxPlugins.rose-pine;
         extraConfig = ''
