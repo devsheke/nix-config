@@ -12,11 +12,9 @@
       right_padding = 6;
       window_gap = 6;
 
-      focus_follows_mouse = "autoraise";
       mouse_follows_focus = "on";
 
       window_placement = "second_child";
-      window_shadow = "off";
     };
     extraConfig = ''
       yabai -m space 1 --label one
@@ -30,27 +28,25 @@
       yabai -m space 9 --label nine
       yabai -m space 10 --label ten
 
-      yabai -m rule --add app="^Brave" manage=on sticky=off space=^2
       yabai -m rule --add app="^Alacritty" manage=on sticky=off space=^1
-      yabai -m rule --add app="^System Preferences$" sticky=off manage=off
+      yabai -m rule --add app="^System Settings$" sticky=off manage=off
       yabai -m rule --add app="^Finder$" sticky=off manage=off
       yabai -m rule --add app="^Disk Utility$" sticky=off manage=off
       yabai -m rule --add app="^System Information$" sticky=off manage=off
       yabai -m rule --add app="^Activity Monitor$" sticky=off manage=off
+      yabai -m rule --add app="^Photo Booth$" sticky=off manage=off space=^5
       yabai -m rule --add app="^Spotify$" sticky=off manage=off space=^5
       yabai -m rule --add app="^Music$" sticky=off manage=off
       yabai -m rule --add app="^Messages$" sticky=off manage=off
       yabai -m rule --add app="^App Store$" sticky=off manage=off
       yabai -m rule --add app="^balenaEtcher$" sticky=off manage=off
       yabai -m rule --add app="^Preview$" sticky=off manage=off
-      yabai -m rule --add app="^QuickTimePlayer$" sticky=off manage=off
+      yabai -m rule --add app="^QuickTime Player$" sticky=off manage=off
       yabai -m rule --add app="^Signal$" sticky=off manage=off space=^4
       yabai -m rule --add app="^IINA$" sticky=off manage=off space=^5
       yabai -m rule --add app="^qBittorrent$" sticky=off manage=off space=^6
-      yabai -m rule --add app="^Firefox Developer Edition$" space=^2
       yabai -m rule --add app="^KeePassXC" sticky=off manage=off
-      yabai -m rule --add app="^MetaTrader 5" sticky=off manage=off space=^3
-      yabai -m rule --add app="^wine64-preloader" sticky=off manage=off space=^3
+      yabai -m rule --add app="^Zen Browser$" space=^2
     '';
   };
 }
