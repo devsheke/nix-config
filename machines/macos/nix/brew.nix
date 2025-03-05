@@ -3,24 +3,26 @@
     enable = true;
     brews = [
       "speedtest-cli"
-      "koekeishiya/formulae/yabai"
     ];
     casks = [
       "alacritty"
       "aldente"
       "balenaetcher"
-      "eloston-chromium"
-      "discord"
+      "brave-browser"
       "docker"
+      "eloston-chromium"
       "iina"
+      "keepassxc"
       "macs-fan-control"
-      "onlyoffice"
+      "obs"
+      "ollama"
       "qbittorrent"
       "spotify"
       "signal"
       "raycast"
       "thunderbird"
       "tor-browser"
+      "zen-browser"
     ];
   };
 }
