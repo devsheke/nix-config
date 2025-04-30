@@ -33,8 +33,7 @@ in {
     ++ (with darwin; [
       apple_sdk.frameworks.Foundation
       apple_sdk.frameworks.Security
-    ])
-    ++ [openvpn];
+    ]);
 
   fonts.packages = with pkgs; [
     nerd-fonts.geist-mono
