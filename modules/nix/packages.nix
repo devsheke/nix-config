@@ -26,7 +26,6 @@
     nil
     python3Minimal
     taplo
-    vimPlugins.nvim-treesitter-parsers.norg
   ];
 
   linuxEssentials = with pkgs; [
