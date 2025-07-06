@@ -14,7 +14,7 @@
 
   apps = import ../../modules/packages pkgs;
 in {
-  imports = [./brew.nix];
+  imports = [./brew.nix (import ./home-manager.nix {inherit vars pkgs;})];
 
   nix = {
     enable = true;
