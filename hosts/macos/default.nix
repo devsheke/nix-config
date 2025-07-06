@@ -31,6 +31,10 @@ in {
 
   environment.systemPackages = with apps; defaults ++ devTools;
 
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+  ];
+
   programs.zsh.enable = true;
   programs.direnv = {
     enable = true;
