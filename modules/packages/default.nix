@@ -1,5 +1,5 @@
 {pkgs, ...}: {
-  common = with pkgs; [
+  defaults = with pkgs; [
     alejandra
     arp-scan
     btop
@@ -9,35 +9,21 @@
     home-manager
     inetutils
     killall
-    openssl
     p7zip
     ripgrep
+    unar
     unzip
     zip
   ];
 
   devTools = with pkgs; [
-    flyctl
+    neovim
     gcc
     gnumake
     lazygit
     luajit
     neovim
     nil
-    python3Minimal
     taplo
-  ];
-
-  linuxEssentials = with pkgs; [
-    alacritty
-    firefox-beta
-    keepassxc
-    onlyoffice-bin_latest
-    openvpn
-    qbittorrent
-    remmina
-    spotify
-    thunderbird
-    ungoogled-chromium
   ];
 }

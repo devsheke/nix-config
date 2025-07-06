@@ -1,27 +1,26 @@
 {...}: {
   homebrew = {
     enable = true;
-    brews = [
-      "speedtest-cli"
-    ];
+    onActivation = {
+      upgrade = false;
+    };
     casks = [
       "aldente"
-      "balenaetcher"
-      "docker"
-      "eloston-chromium"
+      "docker-desktop"
       "ghostty"
+      "figma"
       "iina"
+      "jordanbaird-ice"
       "keepassxc"
+      "linearmouse"
       "macs-fan-control"
-      "obs"
-      "ollama"
       "onlyoffice"
       "qbittorrent"
       "spotify"
-      "signal"
       "raycast"
-      "thunderbird"
       "tor-browser"
+      "ungoogled-chromium"
+      "whatsapp"
       "zen-browser"
     ];
   };
