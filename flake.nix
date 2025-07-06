@@ -20,6 +20,7 @@
   outputs = {
     self,
     darwin,
+    home-manager,
     nixpkgs,
     ...
   } @ args: let
@@ -29,7 +30,14 @@
   in {
     darwinConfigurations."macos" = darwin.lib.darwinSystem {
       specialArgs = {inherit self args nixpkgs vars;};
-      modules = [./hosts/macos];
+      modules = [
+        ./hosts/macos
+        home-manager.darwinModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+        }
+      ];
     };
   };
 }
