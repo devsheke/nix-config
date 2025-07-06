@@ -1,52 +1,43 @@
 {
-  description = "devsheke's nixos configurations";
+  description = "devsheke's nix (and nix-darwin) configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
 
     home-manager = {
-      url = "github:nix-community/home-manager/master";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-darwin = {
-      url = "github:LnL7/nix-darwin";
+    darwin = {
+      url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
   outputs = {
     self,
-    nixpkgs,
-    nixpkgs-stable,
-    nix-darwin,
+    darwin,
     home-manager,
-  } @ inputs: let
-    inherit (self) outputs;
+    nixpkgs,
+    ...
+  } @ args: let
+    vars = {
+      user = "sheke";
+    };
   in {
-    overlays = import ./overlays {inherit inputs;};
-
-    darwinConfigurations."macos" = nix-darwin.lib.darwinSystem {
-      specialArgs = {inherit self inputs outputs;};
-      modules = [./machines/macos/nix];
-    };
-
-    nixosConfigurations."nixos" = nixpkgs.lib.nixosSystem {
-      specialArgs = {inherit inputs outputs;};
-      modules = [./machines/nixos/nix];
-    };
-
-    homeConfigurations."sheke@macos" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-      extraSpecialArgs = {inherit inputs outputs;};
-      modules = [./machines/macos/home-manager];
-    };
-
-    homeConfigurations."sheke@nixos" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      extraSpecialArgs = {inherit inputs outputs;};
-      modules = [./machines/nixos/home-manager];
+    darwinConfigurations."macos" = darwin.lib.darwinSystem {
+      specialArgs = {inherit self args nixpkgs vars;};
+      modules = [
+        ./hosts/macos
+        home-manager.darwinModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+        }
+      ];
     };
   };
 }
