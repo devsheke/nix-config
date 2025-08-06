@@ -14,7 +14,11 @@
 
   apps = import ../../modules/packages pkgs;
 in {
-  imports = [./brew.nix (import ./home-manager.nix {inherit vars pkgs;})];
+  imports = [
+    ./brew.nix
+    (import ./home-manager.nix {inherit vars pkgs;})
+    ./services.nix
+  ];
 
   nix = {
     enable = true;
@@ -82,7 +86,8 @@ in {
           DSDontWriteNetworkStores = true;
           DSDontWriteUSBStores = true;
         };
-        "/Users/${vars.user}/Library/Preferences/ByHost/com.apple.controlcenter".BatteryShowPercentage = true;
+        "/Users/${vars.user}/Library/Preferences/ByHost/com.apple.controlcenter".BatteryShowPercentage =
+          true;
         "com.apple.AdLib".allowApplePersonalizedAdvertising = false;
       };
     };
