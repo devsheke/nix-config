@@ -8,7 +8,7 @@
     historyLimit = 10000;
     mouse = true;
     shell = "${pkgs.zsh}/bin/zsh";
-    terminal = "xterm-256color";
+    terminal = "screen-256color";
     plugins = with pkgs; [
       {plugin = tmuxPlugins.resurrect;}
       {plugin = tmuxPlugins.pain-control;}
