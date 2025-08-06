@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   defaults = with pkgs; [
     alejandra
     arp-scan
@@ -6,9 +7,13 @@
     cloc
     chafa
     dnsutils
+    fd
+    ghostscript_headless
     home-manager
+    imagemagick
     inetutils
     killall
+    neovim
     p7zip
     ripgrep
     unar
