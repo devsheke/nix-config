@@ -31,7 +31,12 @@
     };
     syntaxHighlighting = {
       enable = true;
-      highlighters = ["brackets" "cursor" "pattern" "regexp"];
+      highlighters = [
+        "brackets"
+        "cursor"
+        "pattern"
+        "regexp"
+      ];
     };
   };
 
@@ -46,6 +51,18 @@
       docker_context.disabled = true;
       gcloud.disabled = true;
       package.disabled = true;
+      c.symbol = " ";
+      docker_context.symbol = " ";
+      git_branch.symbol = " ";
+      golang.symbol = " ";
+      hg_branch.symbol = " ";
+      lua.symbol = " ";
+      nix_shell.symbol = " ";
+      nodejs.symbol = " ";
+      package.symbol = "󰏖 ";
+      python.symbol = " ";
+      rust.symbol = " ";
+      ocaml.symbol = " ";
     };
   };
 
