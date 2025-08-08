@@ -1,4 +1,5 @@
-{...}: {
+{ ... }:
+{
   homebrew = {
     enable = true;
     onActivation = {
@@ -12,8 +13,9 @@
       "iina"
       "jordanbaird-ice"
       "keepassxc"
-      "linearmouse"
       "macs-fan-control"
+      "music-presence"
+      "obsidian"
       "onlyoffice"
       "qbittorrent"
       "spotify"
