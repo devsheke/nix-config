@@ -3,7 +3,8 @@
   vars,
   nixpkgs,
   ...
-}: let
+}:
+let
   system = "aarch64-darwin";
 
   pkgs = import nixpkgs {
@@ -13,11 +14,12 @@
   };
 
   apps = import ../../modules/packages pkgs;
-in {
+in
+{
   imports = [
     ./brew.nix
-    (import ./home-manager.nix {inherit vars pkgs;})
-    ./services.nix
+    (import ./home-manager.nix { inherit vars pkgs; })
+    # ./services.nix
   ];
 
   nix = {
@@ -31,7 +33,7 @@ in {
     settings.experimental-features = "nix-command flakes";
   };
 
-  nixpkgs = {inherit pkgs;};
+  nixpkgs = { inherit pkgs; };
 
   environment.systemPackages = with apps; defaults ++ devTools;
 
