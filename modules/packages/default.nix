@@ -7,6 +7,7 @@
     cloc
     chafa
     dnsutils
+    ffmpeg
     fd
     ghostscript_headless
     home-manager
@@ -18,6 +19,7 @@
     ripgrep
     unar
     unzip
+    yt-dlp
     zip
   ];
 
