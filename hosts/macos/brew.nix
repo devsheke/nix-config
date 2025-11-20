@@ -15,7 +15,7 @@
 
     casks = [
       "aldente"
-      "firefox"
+      "firefox@beta"
       "ghostty"
       "helium-browser"
       "iina"
@@ -27,6 +27,7 @@
       "qbittorrent"
       "raycast"
       "tor-browser"
+      "zulu@17"
     ];
   };
 }

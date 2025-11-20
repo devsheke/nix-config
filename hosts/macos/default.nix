@@ -74,16 +74,15 @@ in
         tilesize = 50;
       };
       finder = {
+        AppleShowAllExtensions = true;
+        FXDefaultSearchScope = "SCcf";
+        FXPreferredViewStyle = "Nlsv";
+        NewWindowTarget = "Other";
+        NewWindowTargetPath = "file:///Users/${vars.user}/";
         ShowPathbar = true;
         ShowStatusBar = true;
       };
       CustomUserPreferences = {
-        "com.apple.finder" = {
-          NewWindowTargetPath = "file:///Users/${vars.user}/";
-          NewWindowTarget = "PfHm";
-          FXDefaultSearchScope = "SCcf";
-          FinderSpawnTab = true;
-        };
         "com.apple.desktopservices" = {
           DSDontWriteNetworkStores = true;
           DSDontWriteUSBStores = true;
@@ -93,6 +92,7 @@ in
         "com.apple.AdLib".allowApplePersonalizedAdvertising = false;
       };
     };
+
     primaryUser = vars.user;
     stateVersion = 6;
   };
