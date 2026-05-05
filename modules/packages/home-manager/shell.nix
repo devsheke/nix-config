@@ -11,9 +11,9 @@
       size = 10000;
       share = true;
     };
-    envExtra = ''
-      eval "$(/opt/homebrew/bin/brew shellenv)"
-    '';
+    # envExtra = ''
+    #   eval "$(/opt/homebrew/bin/brew shellenv)"
+    # '';
     initContent = ''
       bindkey '^[[A' history-search-backward
       bindkey ';5A' history-search-backward

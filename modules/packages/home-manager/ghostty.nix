@@ -1,4 +1,5 @@
-{...}: {
+{ ... }:
+{
   programs.ghostty = {
     enable = true;
     enableBashIntegration = true;
@@ -11,7 +12,7 @@
       font-synthetic-style = true;
       font-thicken = true;
       shell-integration-features = "no-cursor";
-      theme = "rose-pine";
+      theme = "Rose Pine";
     };
   };
 }

@@ -9,6 +9,7 @@
     dnsutils
     ffmpeg
     fd
+    git
     ghostscript_headless
     home-manager
     imagemagick
