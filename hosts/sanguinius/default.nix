@@ -20,6 +20,9 @@ in
     })
   ];
 
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -59,25 +62,13 @@ in
   # Configure console keymap
   console.keyMap = "us";
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
+  hardware.graphics = {
     enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
+    extraPackages = with pkgs; [
+      intel-compute-runtime
+      libvdpau-va-gl
+    ];
   };
-
-  services.libinput.enable = true;
-
-  services.thermald.enable = true;
-
-  hardware.graphics.enable = true;
-  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
     modesetting.enable = true;
@@ -98,6 +89,76 @@ in
     nvidiaBusId = "PCI:1:0:0";
   };
 
+  services.xserver.videoDrivers = [ "nvidia" ];
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+    package = pkgs.kdePackages.sddm;
+  };
+
+  security.polkit.enable = true;
+  security.pam.services.sddm.fprintAuth = true;
+  security.pam.services.hyprlock.fprintAuth = true;
+
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
+
+  # Enable sound with pipewire.
+  services.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+  services.libinput.enable = true;
+  services.thermald.enable = true;
+  services.gvfs.enable = true;
+  services.tumbler.enable = true;
+  services.fprintd.enable = true;
+  services.gnome.gnome-keyring.enable = true;
+  systemd.user.services.polkit-gnome-authentication-agent-1 = {
+    description = "polkit-gnome-authentication-agent-1";
+    wantedBy = [ "graphical-session.target" ];
+    wants = [ "graphical-session.target" ];
+    after = [ "graphical-session.target" ];
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+      Restart = "on-failure";
+      RestartSec = 1;
+      TimeoutStopSec = 10;
+    };
+  };
+
+  # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  # programs.mtr.enable = true;
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
+
+  # List services that you want to enable:
+
+  # Enable the OpenSSH daemon.
+  # services.openssh.enable = true;
+
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
+  # networking.firewall.enable = false;
+
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
+  };
+
   programs.zsh.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -114,9 +175,48 @@ in
 
   # Install firefox.
   programs.firefox.enable = true;
+  programs.uwsm.enable = true;
+  programs.hyprland = {
+    enable = true;
+    withUWSM = true;
+    xwayland.enable = true;
+  };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  programs.xfconf.enable = true;
+  environment.systemPackages =
+    with apps;
+    defaults
+    ++ devTools
+    ++ (with pkgs; [
+      alacritty
+      brightnessctl
+      celluloid
+      davinci-resolve
+      discord
+      fastfetch
+      firefox
+      hyprlock
+      keepassxc
+      libinput-gestures
+      networkmanagerapplet
+      onlyoffice-desktopeditors
+      openvpn
+      pavucontrol
+      polkit_gnome
+      seahorse
+      spotify
+      swaybg
+      swaynotificationcenter
+      waybar
+      thunar
+      xarchiver
+      args.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+    ]);
+
+  programs.thunar.plugins = with pkgs.xfce; [
+    thunar-archive-plugin
+    thunar-volman
+  ];
 
   fonts = {
     packages = with pkgs; [
@@ -140,65 +240,6 @@ in
       };
     };
   };
-
-  programs.uwsm.enable = true;
-  programs.hyprland = {
-    enable = true;
-    withUWSM = true;
-    xwayland.enable = true;
-  };
-
-  programs.xfconf.enable = true;
-  environment.systemPackages =
-    with apps;
-    defaults
-    ++ devTools
-    ++ (with pkgs; [
-      alacritty
-      celluloid
-      discord
-      fastfetch
-      firefox
-      keepassxc
-      networkmanagerapplet
-      onlyoffice-desktopeditors
-      openvpn
-      pavucontrol
-      spotify
-      swaybg
-      swaynotificationcenter
-      waybar
-      thunar
-      xarchiver
-      libinput-gestures
-    ]);
-
-  programs.thunar.plugins = with pkgs.xfce; [
-    thunar-archive-plugin
-    thunar-volman
-  ];
-  services.gvfs.enable = true;
-  services.tumbler.enable = true;
-  services.fprintd.enable = true;
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

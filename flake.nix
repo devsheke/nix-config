@@ -22,42 +22,64 @@
       url = "github:abenz1267/walker";
       inputs.elephant.follows = "elephant";
     };
+
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = {
-    self,
-    darwin,
-    home-manager,
-    nixpkgs,
-    ...
-  } @ args: let
-    vars = {
-      user = "sheke";
-    };
-  in {
-    darwinConfigurations."macos" = darwin.lib.darwinSystem {
-      specialArgs = {inherit self args nixpkgs vars;};
-      modules = [
-        ./hosts/macos
-        home-manager.darwinModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-        }
-      ];
-    };
+  outputs =
+    {
+      self,
+      darwin,
+      home-manager,
+      nixpkgs,
+      ...
+    }@args:
+    let
+      vars = {
+        user = "sheke";
+      };
+    in
+    {
+      darwinConfigurations."macos" = darwin.lib.darwinSystem {
+        specialArgs = {
+          inherit
+            self
+            args
+            nixpkgs
+            vars
+            ;
+        };
+        modules = [
+          ./hosts/macos
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+          }
+        ];
+      };
 
       nixosConfigurations."sanguinius" = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux"; # Defines the architecture as standard x86_64
-      specialArgs = {inherit self args nixpkgs vars;};
-      modules = [
-        ./hosts/sanguinius
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-        }
-      ];
+        system = "x86_64-linux"; # Defines the architecture as standard x86_64
+        specialArgs = {
+          inherit
+            self
+            args
+            nixpkgs
+            vars
+            ;
+        };
+        modules = [
+          ./hosts/sanguinius
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+          }
+        ];
+      };
     };
-  };
 }

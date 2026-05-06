@@ -69,15 +69,6 @@ in
       runAsService = true;
     };
 
-    xdg.desktopEntries.spotify = {
-      name = "Spotify";
-      genericName = "Music Player";
-      exec = "spotify_player";
-      icon = "/home/sheke/Pictures/icons/spotify.png";
-      terminal = true;
-      type = "Application";
-    };
-
     services.playerctld.enable = true;
   };
 }
