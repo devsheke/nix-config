@@ -20,6 +20,8 @@ in
     })
   ];
 
+  nix.settings.experimental-features = "nix-command flakes";
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -62,13 +64,12 @@ in
   # Configure console keymap
   console.keyMap = "us";
 
-  hardware.graphics = {
+  hardware.bluetooth = {
     enable = true;
-    extraPackages = with pkgs; [
-      intel-compute-runtime
-      libvdpau-va-gl
-    ];
+    powerOnBoot = true;
   };
+
+  hardware.graphics.enable = true;
 
   hardware.nvidia = {
     modesetting.enable = true;
@@ -84,16 +85,17 @@ in
       enable = true;
       enableOffloadCmd = true;
     };
-
     intelBusId = "PCI:0:2:0";
     nvidiaBusId = "PCI:1:0:0";
   };
 
   services.xserver.videoDrivers = [ "nvidia" ];
+
   services.displayManager.sddm = {
     enable = true;
-    wayland.enable = true;
     package = pkgs.kdePackages.sddm;
+    wayland.enable = true;
+    theme = "catppuccin-mocha-mauve";
   };
 
   security.polkit.enable = true;
@@ -119,6 +121,7 @@ in
   services.tumbler.enable = true;
   services.fprintd.enable = true;
   services.gnome.gnome-keyring.enable = true;
+  services.blueman.enable = true;
   systemd.user.services.polkit-gnome-authentication-agent-1 = {
     description = "polkit-gnome-authentication-agent-1";
     wantedBy = [ "graphical-session.target" ];
@@ -133,25 +136,6 @@ in
     };
   };
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   xdg.portal = {
@@ -160,6 +144,11 @@ in
   };
 
   programs.zsh.enable = true;
+  programs.direnv = {
+    enable = true;
+    loadInNixShell = true;
+    nix-direnv.enable = true;
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.sheke = {
@@ -189,28 +178,43 @@ in
     ++ devTools
     ++ (with pkgs; [
       alacritty
+      brave
       brightnessctl
       celluloid
       davinci-resolve
       discord
       fastfetch
       firefox
+      grimblast
       hyprlock
       keepassxc
+      kooha
       libinput-gestures
       networkmanagerapplet
+      obsidian
       onlyoffice-desktopeditors
+      opencode
       openvpn
       pavucontrol
       polkit_gnome
+      satty
       seahorse
       spotify
       swaybg
       swaynotificationcenter
       waybar
       thunar
+      wl-clipboard
       xarchiver
       args.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+      (catppuccin-sddm.override {
+        flavor = "mocha";
+        accent = "mauve";
+        font = "Inter";
+        fontSize = "12";
+        background = "/home/sheke/Pictures/sanguinius-motif.png";
+        loginBackground = true;
+      })
     ]);
 
   programs.thunar.plugins = with pkgs.xfce; [
@@ -232,7 +236,7 @@ in
 
     fontconfig = {
       defaultFonts = {
-        serif = [
+        sansSerif = [
           "Inter"
           "Noto Sans"
         ];

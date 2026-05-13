@@ -15,9 +15,12 @@
     imagemagick
     inetutils
     killall
+    lsof
     neovim
+    poppler-utils
     p7zip
     ripgrep
+    tree-sitter
     unar
     unzip
     yt-dlp

@@ -57,11 +57,13 @@ in
 
     qt = {
       enable = true;
-      platformTheme.name = "adwaita";
       style = {
-        name = "adwaita";
-        package = pkgs.adwaita-qt;
+        name = "adwaita-dark";
       };
+    };
+
+    dconf.settings = {
+      "org/gnome/desktop/interface".color-scheme = "prefer-dark";
     };
 
     programs.walker = {
