@@ -4,7 +4,6 @@
 
 {
   args,
-  config,
   pkgs,
   vars,
   ...
@@ -18,6 +17,7 @@ in
     (import ./home-manager.nix {
       inherit args vars pkgs;
     })
+    ./virtualisation.nix
   ];
 
   nix.settings.experimental-features = "nix-command flakes";
@@ -69,27 +69,14 @@ in
     powerOnBoot = true;
   };
 
-  hardware.graphics.enable = true;
-
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = true;
-    powerManagement.finegrained = true;
-    open = false;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      intel-vaapi-driver
+      libvpl
+    ];
   };
-
-  hardware.nvidia.prime = {
-    offload = {
-      enable = true;
-      enableOffloadCmd = true;
-    };
-    intelBusId = "PCI:0:2:0";
-    nvidiaBusId = "PCI:1:0:0";
-  };
-
-  services.xserver.videoDrivers = [ "nvidia" ];
 
   services.displayManager.sddm = {
     enable = true;
@@ -101,6 +88,20 @@ in
   security.polkit.enable = true;
   security.pam.services.sddm.fprintAuth = true;
   security.pam.services.hyprlock.fprintAuth = true;
+  security.pam.loginLimits = [
+    {
+      domain = "sheke";
+      type = "-";
+      item = "memlock";
+      value = "unlimited";
+    }
+    {
+      domain = "@libvirtd";
+      type = "-";
+      item = "memlock";
+      value = "unlimited";
+    }
+  ];
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -158,6 +159,10 @@ in
       "input"
       "networkmanager"
       "wheel"
+      "libvirtd"
+      "kvm"
+      "video"
+      "render"
     ];
     shell = pkgs.zsh;
   };
@@ -181,7 +186,7 @@ in
       brave
       brightnessctl
       celluloid
-      davinci-resolve
+      # davinci-resolve
       discord
       fastfetch
       firefox
@@ -190,6 +195,7 @@ in
       keepassxc
       kooha
       libinput-gestures
+      looking-glass-client
       networkmanagerapplet
       obsidian
       onlyoffice-desktopeditors

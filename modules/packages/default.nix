@@ -7,7 +7,7 @@
     cloc
     chafa
     dnsutils
-    ffmpeg
+    ffmpeg-full
     fd
     git
     ghostscript_headless
