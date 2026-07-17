@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   pkgs,
   ...
 }:
@@ -40,6 +39,7 @@
   programs.virt-manager.enable = true;
 
   users.groups.libvirtd.members = [ "sheke" ];
+  users.users.qemu-libvirtd.extraGroups = [ "input" ];
 
   services.udev.extraRules = ''
     SUBSYSTEM=="kvmfr", OWNER="sheke", GROUP="kvm", MODE="0660"
@@ -67,8 +67,24 @@
           "/dev/kvmfr0"
         ]
       '';
+      vhostUserPackages = [ pkgs.virtiofsd ];
     };
   };
 
   virtualisation.spiceUSBRedirection.enable = true;
+
+  virtualisation.docker = {
+    enable = true;
+    daemon.settings = {
+      dns = [
+        "1.1.1.1"
+        "8.8.8.8"
+      ];
+    };
+
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
 }

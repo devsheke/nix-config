@@ -8,22 +8,24 @@
   vars,
   ...
 }:
-let
-  apps = import ../../modules/packages pkgs;
-in
 {
   imports = [
     ./hardware-configuration.nix
     (import ./home-manager.nix {
       inherit args vars pkgs;
     })
+    (import ./packages.nix { inherit args pkgs; })
+    ./services.nix
     ./virtualisation.nix
   ];
 
   nix.settings.experimental-features = "nix-command flakes";
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    config.allowUnfree = true;
+    overlays = [ (import ../../overlays/virtiofsd.nix) ];
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -32,10 +34,17 @@ in
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  networking.hostName = "sanguinius"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "sanguinius"; # Define your hostname.
+    networkmanager = {
+      enable = true;
+      dns = "none";
+    };
+    nameservers = [
+      "1.1.1.1"
+      "194.242.2.4"
+    ];
+  };
 
   # Set your time zone.
   time.timeZone = "Asia/Kolkata";
@@ -78,65 +87,6 @@ in
     ];
   };
 
-  services.displayManager.sddm = {
-    enable = true;
-    package = pkgs.kdePackages.sddm;
-    wayland.enable = true;
-    theme = "catppuccin-mocha-mauve";
-  };
-
-  security.polkit.enable = true;
-  security.pam.services.sddm.fprintAuth = true;
-  security.pam.services.hyprlock.fprintAuth = true;
-  security.pam.loginLimits = [
-    {
-      domain = "sheke";
-      type = "-";
-      item = "memlock";
-      value = "unlimited";
-    }
-    {
-      domain = "@libvirtd";
-      type = "-";
-      item = "memlock";
-      value = "unlimited";
-    }
-  ];
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
-  services.libinput.enable = true;
-  services.thermald.enable = true;
-  services.gvfs.enable = true;
-  services.tumbler.enable = true;
-  services.fprintd.enable = true;
-  services.gnome.gnome-keyring.enable = true;
-  services.blueman.enable = true;
-  systemd.user.services.polkit-gnome-authentication-agent-1 = {
-    description = "polkit-gnome-authentication-agent-1";
-    wantedBy = [ "graphical-session.target" ];
-    wants = [ "graphical-session.target" ];
-    after = [ "graphical-session.target" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-      Restart = "on-failure";
-      RestartSec = 1;
-      TimeoutStopSec = 10;
-    };
-  };
-
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   xdg.portal = {
@@ -144,18 +94,12 @@ in
     extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
   };
 
-  programs.zsh.enable = true;
-  programs.direnv = {
-    enable = true;
-    loadInNixShell = true;
-    nix-direnv.enable = true;
-  };
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.sheke = {
     isNormalUser = true;
     description = "sheke";
     extraGroups = [
+      "docker"
       "input"
       "networkmanager"
       "wheel"
@@ -166,67 +110,6 @@ in
     ];
     shell = pkgs.zsh;
   };
-
-  # Install firefox.
-  programs.firefox.enable = true;
-  programs.uwsm.enable = true;
-  programs.hyprland = {
-    enable = true;
-    withUWSM = true;
-    xwayland.enable = true;
-  };
-
-  programs.xfconf.enable = true;
-  environment.systemPackages =
-    with apps;
-    defaults
-    ++ devTools
-    ++ (with pkgs; [
-      alacritty
-      brave
-      brightnessctl
-      celluloid
-      # davinci-resolve
-      discord
-      fastfetch
-      firefox
-      grimblast
-      hyprlock
-      keepassxc
-      kooha
-      libinput-gestures
-      looking-glass-client
-      networkmanagerapplet
-      obsidian
-      onlyoffice-desktopeditors
-      opencode
-      openvpn
-      pavucontrol
-      polkit_gnome
-      satty
-      seahorse
-      spotify
-      swaybg
-      swaynotificationcenter
-      waybar
-      thunar
-      wl-clipboard
-      xarchiver
-      args.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
-      (catppuccin-sddm.override {
-        flavor = "mocha";
-        accent = "mauve";
-        font = "Inter";
-        fontSize = "12";
-        background = "/home/sheke/Pictures/sanguinius-motif.png";
-        loginBackground = true;
-      })
-    ]);
-
-  programs.thunar.plugins = with pkgs.xfce; [
-    thunar-archive-plugin
-    thunar-volman
-  ];
 
   fonts = {
     packages = with pkgs; [
