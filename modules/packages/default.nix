@@ -19,6 +19,7 @@
     neovim
     poppler-utils
     p7zip
+    python3
     ripgrep
     tree-sitter
     unar
