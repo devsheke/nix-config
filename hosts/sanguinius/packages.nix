@@ -34,6 +34,10 @@ in
     ++ (with pkgs; [
       antigravity-cli
       adwaita-qt6
+      libsForQt5.qt5ct
+      kdePackages.qt6ct
+      libsForQt5.qtstyleplugin-kvantum
+      kdePackages.qtstyleplugin-kvantum
       bubblewrap
       brave
       brightnessctl

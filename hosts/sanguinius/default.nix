@@ -11,6 +11,8 @@
 {
   imports = [
     ./hardware-configuration.nix
+    args.stylix.nixosModules.stylix
+    ./stylix.nix
     (import ./home-manager.nix {
       inherit args vars pkgs;
     })

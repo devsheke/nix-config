@@ -6,7 +6,6 @@
 }:
 let
   modulesPath = ../../modules/packages/home-manager;
-  system = pkgs.stdenv.hostPlatform.system;
 in
 {
   home-manager.users.${vars.user} = {
@@ -17,7 +16,6 @@ in
       (modulesPath + "/nvim.nix")
       (modulesPath + "/shell.nix")
       (modulesPath + "/tmux.nix")
-      args.ags.homeManagerModules.default
     ];
 
     home = {
@@ -26,77 +24,51 @@ in
       stateVersion = "26.05";
     };
 
-    home.pointerCursor = {
-      x11.enable = true;
-      gtk.enable = true;
-      name = "BreezeX-RosePine-Linux";
-      package = pkgs.rose-pine-cursor;
-      size = 24;
-    };
-
     dconf.settings = {
       "org/gnome/desktop/interface".color-scheme = "prefer-dark";
     };
 
     gtk = {
       enable = true;
-
-      colorScheme = "dark";
-
-      font.name = "Inter";
-
       iconTheme = {
         package = pkgs.papirus-icon-theme;
         name = "Papirus-Dark";
       };
-
-      cursorTheme = {
-        name = "BreezeX-RosePine-Linux";
-        package = pkgs.rose-pine-cursor;
-      };
-
-      theme = {
-        name = "Nordic-darker";
-        package = pkgs.nordic;
-      };
-
-      gtk3.extraConfig.gtk-application-prefer-dark-theme = true;
-      gtk4.extraConfig.gtk-application-prefer-dark-theme = true;
     };
 
-    qt = {
-      enable = true;
-      platformTheme.name = "adwaita";
-      style = {
-        name = "adwaita-dark";
-        package = pkgs.adwaita-qt;
+    programs.elephant.package =
+      let
+        system = pkgs.stdenv.hostPlatform.system;
+        elephant-overridden = args.elephant.packages.${system}.elephant.overrideAttrs (oldAttrs: {
+          vendorHash = "sha256-ssX+ZQ6v+XcwC/RuIZ+rO/9zZwZnotudj8bvZNM7M3g=";
+        });
+        elephant-providers-overridden =
+          args.elephant.packages.${system}.elephant-providers.overrideAttrs
+            (oldAttrs: {
+              vendorHash = "sha256-ssX+ZQ6v+XcwC/RuIZ+rO/9zZwZnotudj8bvZNM7M3g=";
+            });
+      in
+      pkgs.symlinkJoin {
+        name = "elephant-with-providers-2.22.0";
+        paths = [
+          elephant-overridden
+          elephant-providers-overridden
+        ];
       };
-    };
 
     programs.walker = {
       enable = true;
       runAsService = true;
     };
 
-    programs.ags = {
-      enable = true;
-      configDir = null;
-      extraPackages = [
-        args.astal.packages.${system}.apps
-        args.astal.packages.${system}.battery
-        args.astal.packages.${system}.hyprland
-        args.astal.packages.${system}.mpris
-        args.astal.packages.${system}.network
-        args.astal.packages.${system}.powerprofiles
-        args.astal.packages.${system}.tray
-        args.astal.packages.${system}.wireplumber
-      ];
-    };
-
     services.playerctld.enable = true;
 
-    home.sessionVariables = {
-      GTK_THEME = "Nordic-darker";
+    stylix.targets.ghostty.enable = false;
+    stylix.targets.starship.enable = false;
+    stylix.targets.tmux.enable = false;
+    stylix.targets.zen-browser = {
+      enable = true;
+      profileNames = [ "Default Profile" ];
     };
   };
 }
