@@ -3,7 +3,7 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 {
-  args,
+  inputs,
   pkgs,
   vars,
   ...
@@ -11,12 +11,12 @@
 {
   imports = [
     ./hardware-configuration.nix
-    args.stylix.nixosModules.stylix
+    inputs.stylix.nixosModules.stylix
     ./stylix.nix
     (import ./home-manager.nix {
-      inherit args vars pkgs;
+      inherit inputs vars pkgs;
     })
-    (import ./packages.nix { inherit args pkgs; })
+    (import ./packages.nix { inherit inputs pkgs; })
     ./services.nix
     ./virtualisation.nix
   ];
@@ -26,7 +26,10 @@
   # Allow unfree packages
   nixpkgs = {
     config.allowUnfree = true;
-    overlays = [ (import ../../overlays/virtiofsd.nix) ];
+    overlays = [
+      (import ../../overlays/virtiofsd.nix)
+      (import inputs.rust-overlay)
+    ];
   };
 
   # Bootloader.

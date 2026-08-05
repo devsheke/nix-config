@@ -1,4 +1,4 @@
-{ pkgs, args, ... }:
+{ pkgs, inputs, ... }:
 let
   apps = import ../../modules/packages pkgs;
 in
@@ -76,7 +76,7 @@ in
       wl-clipboard
       waybar
       xarchiver
-      args.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       pkgs.sddm-astronaut
     ]);
 
