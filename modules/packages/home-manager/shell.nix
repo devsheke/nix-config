@@ -15,13 +15,13 @@
     #   eval "$(/opt/homebrew/bin/brew shellenv)"
     # '';
     initContent = ''
-      bindkey '^[[A' history-search-backward
-      bindkey ';5A' history-search-backward
-      bindkey '^[[B' history-search-forward
-      bindkey ';5B' history-search-forward
+      # History search with Ctrl + Up / Ctrl + Down
+      bindkey '^[[1;5A' history-search-backward
+      bindkey '^[[1;5B' history-search-forward
 
-      bindkey ';5C' forward-word
-      bindkey ';5D' backward-word
+      # Enable Ctrl + Arrow word navigation
+      bindkey '^[[1;5D' backward-word
+      bindkey '^[[1;5C' forward-word
 
       export MANPAGER='nvim +Man!'
     '';
