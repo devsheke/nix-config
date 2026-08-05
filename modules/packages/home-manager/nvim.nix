@@ -1,7 +1,8 @@
-{...}: {
+{ ... }: {
   programs.neovim = {
-    enable = false;
+    enable = true;
     defaultEditor = true;
+    sideloadInitLua = true;
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
