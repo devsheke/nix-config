@@ -19,7 +19,6 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   nativeBuildInputs = with pkgs; [
-    autoPatchelfHook
     dpkg
     makeWrapper
     wrapGAppsHook3
@@ -67,18 +66,6 @@ stdenv.mkDerivation (finalAttrs: {
     vulkan-loader
   ];
 
-  # The archive includes optional Qt integration shims and musl variants of
-  # native Node modules. Neither is used by the glibc Electron application.
-  autoPatchelfIgnoreMissingDeps = [
-    "libQt5Core.so.5"
-    "libQt5Gui.so.5"
-    "libQt5Widgets.so.5"
-    "libQt6Core.so.6"
-    "libQt6Gui.so.6"
-    "libQt6Widgets.so.6"
-    "libc.musl-x86_64.so.1"
-  ];
-
   dontBuild = true;
   dontStrip = true;
   dontWrapGApps = true;
@@ -101,12 +88,15 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   preFixup = ''
-      # Replace the Debian symlink with a wrapper that keeps the original
-      # launcher semantics, GTK environment, and required runtime commands.
-      rm "$out/bin/chatgpt"
-      makeWrapper "$out/lib/chatgpt/codex-launcher" "$out/bin/chatgpt" \
-        "''${gappsWrapperArgs[@]}" \
-        --prefix PATH : ${lib.makeBinPath runtimeTools}
+    # Electron's Crashpad and process.report implementations inspect the main
+    # executable's program headers. Rewriting this unusually large ELF with
+    # patchelf relocates PT_DYNAMIC and makes that inspection crash. Keep the
+    # vendor executable intact and let this host's nix-ld load its libraries.
+    rm "$out/bin/chatgpt"
+    makeWrapper "$out/lib/chatgpt/codex-launcher" "$out/bin/chatgpt" \
+      "''${gappsWrapperArgs[@]}" \
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath (finalAttrs.buildInputs ++ finalAttrs.runtimeDependencies)} \
+      --prefix PATH : ${lib.makeBinPath runtimeTools}
 
     # This bundled executable has no usable ELF section table, so patchelf
     # cannot replace its Debian loader. Use Nix's native Tectonic build for

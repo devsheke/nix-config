@@ -1,6 +1,7 @@
 { pkgs, inputs, ... }:
 let
   apps = import ../../modules/packages pkgs;
+  chatgpt = pkgs.callPackage ./chatgpt.nix {};
 in
 {
   programs.direnv = {
@@ -42,6 +43,7 @@ in
       brave
       brightnessctl
       celluloid
+      chatgpt
       claude-code
       # davinci-resolve
       discord
