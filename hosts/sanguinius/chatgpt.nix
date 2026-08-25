@@ -10,12 +10,12 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "chatgpt";
-  version = "26.810.52044";
+  version = "26.818.61809";
 
   src = pkgs.fetchurl {
     name = "chatgpt_amd64.deb";
     url = "https://persistent.oaistatic.com/codex-app-prod/linux/deb/pool/main/c/chatgpt/chatgpt_${finalAttrs.version}_amd64.deb";
-    hash = "sha256-cIoVobt24rt/DjduUUU5H6J3rTpkBXwdMlN73CobTm4=";
+    hash = "sha256-G7piptvS1Jl1xihQ2O3arWBdoZNVexlJgiJeVrGUGJE=";
   };
 
   nativeBuildInputs = with pkgs; [
@@ -95,7 +95,9 @@ stdenv.mkDerivation (finalAttrs: {
     rm "$out/bin/chatgpt"
     makeWrapper "$out/lib/chatgpt/codex-launcher" "$out/bin/chatgpt" \
       "''${gappsWrapperArgs[@]}" \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath (finalAttrs.buildInputs ++ finalAttrs.runtimeDependencies)} \
+      --prefix LD_LIBRARY_PATH : ${
+        lib.makeLibraryPath (finalAttrs.buildInputs ++ finalAttrs.runtimeDependencies)
+      } \
       --prefix PATH : ${lib.makeBinPath runtimeTools}
 
     # This bundled executable has no usable ELF section table, so patchelf
