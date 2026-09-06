@@ -64,4 +64,6 @@
       TimeoutStopSec = 10;
     };
   };
+
+  services.udev.packages = with pkgs; [ platformio-core.udev ];
 }

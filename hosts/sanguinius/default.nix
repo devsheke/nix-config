@@ -113,6 +113,8 @@
       "kvm"
       "video"
       "render"
+      "dialout"
+      "uucp"
     ];
     shell = pkgs.zsh;
   };
