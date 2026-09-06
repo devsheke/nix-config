@@ -80,6 +80,8 @@ in
       xarchiver
       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       pkgs.sddm-astronaut
+      mkcert
+      nssTools
     ]);
 
   programs.localsend.enable = true;

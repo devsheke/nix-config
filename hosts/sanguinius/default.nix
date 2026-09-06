@@ -11,6 +11,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./https.nix
     inputs.stylix.nixosModules.stylix
     ./stylix.nix
     (import ./home-manager.nix {
