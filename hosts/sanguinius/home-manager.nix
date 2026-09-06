@@ -1,5 +1,5 @@
 {
-  args,
+  inputs,
   pkgs,
   vars,
   ...
@@ -10,7 +10,7 @@ in
 {
   home-manager.users.${vars.user} = {
     imports = [
-      args.walker.homeManagerModules.default
+      inputs.walker.homeManagerModules.default
       (modulesPath + "/ghostty.nix")
       (modulesPath + "/git.nix")
       (modulesPath + "/nvim.nix")
@@ -36,25 +36,10 @@ in
       };
     };
 
-    programs.elephant.package =
-      let
-        system = pkgs.stdenv.hostPlatform.system;
-        elephant-overridden = args.elephant.packages.${system}.elephant.overrideAttrs (oldAttrs: {
-          vendorHash = "sha256-ssX+ZQ6v+XcwC/RuIZ+rO/9zZwZnotudj8bvZNM7M3g=";
-        });
-        elephant-providers-overridden =
-          args.elephant.packages.${system}.elephant-providers.overrideAttrs
-            (oldAttrs: {
-              vendorHash = "sha256-ssX+ZQ6v+XcwC/RuIZ+rO/9zZwZnotudj8bvZNM7M3g=";
-            });
-      in
-      pkgs.symlinkJoin {
-        name = "elephant-with-providers-2.22.0";
-        paths = [
-          elephant-overridden
-          elephant-providers-overridden
-        ];
-      };
+    qt = {
+      enable = true;
+      style.name = "kvantum";
+    };
 
     programs.walker = {
       enable = true;
@@ -63,12 +48,25 @@ in
 
     services.playerctld.enable = true;
 
+    home.sessionVariables = {
+      QT_QPA_PLATFORMTHEME = pkgs.lib.mkForce "qt5ct;qt6ct";
+    };
+
     stylix.targets.ghostty.enable = false;
     stylix.targets.starship.enable = false;
     stylix.targets.tmux.enable = false;
+    stylix.targets.qt = {
+      enable = true;
+      platform = "qtct";
+    };
     stylix.targets.zen-browser = {
       enable = true;
       profileNames = [ "Default Profile" ];
+    };
+
+    services.xembed-sni-proxy = {
+      enable = true;
+      package = pkgs.kdePackages.plasma-workspace;
     };
   };
 }
