@@ -1,7 +1,21 @@
-{ pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  lib,
+  ...
+}:
 let
   apps = import ../../modules/packages pkgs;
-  chatgpt = pkgs.callPackage ./chatgpt.nix {};
+  chatgpt = pkgs.callPackage ./chatgpt.nix { };
+  patchDesktop =
+    pkg: appName: from: to:
+    lib.hiPrio (
+      pkgs.runCommand "$patched-desktop-entry-for-${appName}" { } ''
+        ${pkgs.coreutils}/bin/mkdir -p $out/share/applications
+        ${pkgs.gnused}/bin/sed 's#${from}#${to}#g' < ${pkg}/share/applications/${appName}.desktop > $out/share/applications/${appName}.desktop
+      ''
+    );
+  GPUOffloadApp = pkg: desktopName: (patchDesktop pkg desktopName "^Exec=" "Exec=nvidia-offload ");
 in
 {
   programs.direnv = {
@@ -44,26 +58,20 @@ in
       brightnessctl
       celluloid
       chatgpt
-      claude-code
-      # davinci-resolve
       discord
       fastfetch
-      firefox
       grimblast
       guestfs-tools
+      heroic
       hyprlock
       hyprshutdown
       keepassxc
-      kooha
       libinput-gestures
       looking-glass-client
       mpv
       networkmanagerapplet
-      ngrok
-      obs-studio
       obsidian
       onlyoffice-desktopeditors
-      opencode
       openvpn
       pavucontrol
       polkit_gnome
@@ -82,9 +90,12 @@ in
       pkgs.sddm-astronaut
       mkcert
       nssTools
+      (GPUOffloadApp pkgs.steam "steam")
+      (GPUOffloadApp pkgs.heroic "com.heroicgameslauncher.hgl")
     ]);
 
   programs.localsend.enable = true;
+  programs.steam.enable = true;
   # Optional: explicitly enable firewall opening (default is true)
   # programs.localsend.openFirewall = true;
 }
