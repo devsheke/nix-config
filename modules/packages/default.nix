@@ -17,6 +17,7 @@
     killall
     lsof
     neovim
+    openssl
     poppler-utils
     p7zip
     python3
