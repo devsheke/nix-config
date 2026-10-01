@@ -24,6 +24,12 @@ in
       stateVersion = "26.05";
     };
 
+    xdg.configFile."uwsm/env-hyprland".text = ''
+      export AQ_DRM_DEVICES=/dev/dri/intel-igpu
+      export GSK_RENDERER=gl
+      export __EGL_VENDOR_LIBRARY_FILENAMES=/run/opengl-driver/share/glvnd/egl_vendor.d/50_mesa.json
+    '';
+
     dconf.settings = {
       "org/gnome/desktop/interface".color-scheme = "prefer-dark";
     };

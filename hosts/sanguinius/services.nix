@@ -65,5 +65,10 @@
     };
   };
 
-  services.udev.packages = with pkgs; [ platformio-core.udev ];
+  services.udev = {
+    packages = with pkgs; [ platformio-core.udev ];
+    extraRules = ''
+      SUBSYSTEM=="drm", KERNEL=="card[0-9]*", KERNELS=="0000:00:02.0", DRIVERS=="i915", SYMLINK+="dri/intel-igpu"
+    '';
+  };
 }
