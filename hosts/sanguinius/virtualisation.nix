@@ -8,10 +8,6 @@
 
   boot.blacklistedKernelModules = [
     "nouveau"
-    "nvidia"
-    "nvidia_drm"
-    "nvidia_modeset"
-    "nvidia_uvm"
   ];
 
   boot.initrd.kernelModules = [
@@ -24,15 +20,14 @@
     "kvmfr.static_size_mb=64"
     "intel_iommu=on"
     "iommu=pt"
-    "video=efifb:off"
-    "video=vesafb:off"
-    "video=simplefb:off"
   ];
 
-  boot.kernelModules = [ "kvmfr" ];
+  boot.kernelModules = [
+    "kvmfr"
+    "vfio_pci"
+  ];
 
   boot.extraModprobeConfig = ''
-    options vfio-pci ids=10de:25b9,10de:2291
     options kvmfr static_size_mb=64
   '';
 
