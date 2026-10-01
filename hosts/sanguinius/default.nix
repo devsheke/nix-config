@@ -3,9 +3,11 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 {
+  config,
   inputs,
   pkgs,
   vars,
+  lib,
   ...
 }:
 {
@@ -17,12 +19,23 @@
     (import ./home-manager.nix {
       inherit inputs vars pkgs;
     })
-    (import ./packages.nix { inherit inputs pkgs; })
+    (import ./packages.nix {
+      inherit
+        inputs
+        pkgs
+        lib
+        config
+        ;
+    })
     ./services.nix
+    ./nvidia.nix
     ./virtualisation.nix
   ];
 
-  nix.settings.experimental-features = "nix-command flakes";
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Allow unfree packages
   nixpkgs = {
