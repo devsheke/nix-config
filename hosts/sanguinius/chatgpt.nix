@@ -10,12 +10,12 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "chatgpt";
-  version = "26.901.31953";
+  version = "26.928.40906";
 
   src = pkgs.fetchurl {
     name = "chatgpt_amd64.deb";
     url = "https://persistent.oaistatic.com/codex-app-prod/linux/deb/pool/main/c/chatgpt/chatgpt_${finalAttrs.version}_amd64.deb";
-    hash = "sha256-K7RSK+h33mwX5fTAcbBuxkiCsd0JqPC9IErwI6t1bZw=";
+    hash = "sha256-gJQATxy8zzXe797RWWGqQrTbiJEhpdlSxfMM+CvYrTA=";
   };
 
   nativeBuildInputs = with pkgs; [
@@ -49,9 +49,11 @@ stdenv.mkDerivation (finalAttrs: {
     libxrandr
     nspr
     nss
+    openssl
     pango
     stdenv.cc.cc.lib
     systemd
+    tpm2-tss
   ];
 
   # Electron loads these libraries dynamically, so they are not visible in
@@ -103,7 +105,7 @@ stdenv.mkDerivation (finalAttrs: {
     # This bundled executable has no usable ELF section table, so patchelf
     # cannot replace its Debian loader. Use Nix's native Tectonic build for
     # the app's LaTeX plugin instead.
-    tectonic="$out/lib/chatgpt/resources/plugins/openai-bundled/plugins/latex/bin/tectonic"
+    tectonic="$out/lib/chatgpt/resources/tectonic/tectonic"
     rm "$tectonic"
     ln -s ${lib.getExe pkgs.tectonic} "$tectonic"
   '';
