@@ -26,6 +26,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell/stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    matugen.url = "github:InioX/Matugen";
+
     elephant.url = "github:abenz1267/elephant";
 
     walker = {
@@ -39,57 +46,54 @@
     };
   };
 
-  outputs =
-    {
-      self,
-      darwin,
-      home-manager,
-      nixpkgs,
-      ...
-    }@inputs:
-    let
-      vars = {
-        user = "sheke";
-      };
-    in
-    {
-      darwinConfigurations."macos" = darwin.lib.darwinSystem {
-        specialArgs = {
-          inherit
-            self
-            inputs
-            nixpkgs
-            vars
-            ;
-        };
-        modules = [
-          ./hosts/macos
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-          }
-        ];
-      };
-
-      nixosConfigurations."sanguinius" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux"; # Defines the architecture as standard x86_64
-        specialArgs = {
-          inherit
-            self
-            inputs
-            nixpkgs
-            vars
-            ;
-        };
-        modules = [
-          ./hosts/sanguinius
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-          }
-        ];
-      };
+  outputs = {
+    self,
+    darwin,
+    home-manager,
+    nixpkgs,
+    ...
+  } @ inputs: let
+    vars = {
+      user = "sheke";
     };
+  in {
+    darwinConfigurations."macos" = darwin.lib.darwinSystem {
+      specialArgs = {
+        inherit
+          self
+          inputs
+          nixpkgs
+          vars
+          ;
+      };
+      modules = [
+        ./hosts/macos
+        home-manager.darwinModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+        }
+      ];
+    };
+
+    nixosConfigurations."sanguinius" = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux"; # Defines the architecture as standard x86_64
+      specialArgs = {
+        inherit
+          self
+          inputs
+          nixpkgs
+          vars
+          ;
+      };
+      modules = [
+        ./hosts/sanguinius
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+        }
+      ];
+    };
+  };
 }

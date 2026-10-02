@@ -1,0 +1,2 @@
+# Blank-line context markers are required unified-diff syntax.
+modules/packages/home-manager/rose-pine-shell/shell.patch -whitespace

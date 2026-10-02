@@ -7,6 +7,7 @@
 let
   apps = import ../../modules/packages pkgs;
   chatgpt = pkgs.callPackage ./chatgpt.nix { };
+  system = "x86_64-linux";
   patchDesktop =
     pkg: appName: from: to:
     lib.hiPrio (
@@ -32,11 +33,6 @@ in
   };
 
   programs.nix-ld.enable = true;
-
-  programs.thunar.plugins = with pkgs.xfce; [
-    thunar-archive-plugin
-    thunar-volman
-  ];
 
   programs.xfconf.enable = true;
 
@@ -70,6 +66,7 @@ in
       looking-glass-client
       mpv
       networkmanagerapplet
+      inputs.matugen.packages.${system}.default
       obsidian
       onlyoffice-desktopeditors
       openvpn
@@ -81,7 +78,7 @@ in
       swaybg
       swaynotificationcenter
       tigervnc
-      thunar
+      kdePackages.dolphin
       virtiofsd
       wl-clipboard
       waybar

@@ -3,18 +3,18 @@
   pkgs,
   vars,
   ...
-}:
-let
+}: let
   modulesPath = ../../modules/packages/home-manager;
-in
-{
-  home-manager.users.${vars.user} = {
+in {
+  home-manager.extraSpecialArgs = {inherit inputs;};
+  home-manager.users.${vars.user} = {lib, ...}: {
     imports = [
-      inputs.walker.homeManagerModules.default
+      inputs.dms.homeModules.dank-material-shell
       (modulesPath + "/ghostty.nix")
       (modulesPath + "/git.nix")
       (modulesPath + "/nvim.nix")
       (modulesPath + "/shell.nix")
+      (modulesPath + "/rose-pine-shell.nix")
       (modulesPath + "/tmux.nix")
     ];
 
@@ -47,10 +47,26 @@ in
       style.name = "kvantum";
     };
 
-    programs.walker = {
-      enable = true;
-      runAsService = true;
-    };
+    programs.rose-pine-shell.enable = true;
+
+    home.packages = [pkgs.kdePackages.dolphin];
+    # The absolute launcher also works before the full system profile is switched.
+    xdg.dataFile."applications/org.kde.dolphin.desktop".source = let
+      launcher = pkgs.makeDesktopItem {
+        name = "org.kde.dolphin";
+        desktopName = "Dolphin";
+        genericName = "File Manager";
+        exec = "${pkgs.kdePackages.dolphin}/bin/dolphin %u";
+        icon = "org.kde.dolphin";
+        terminal = false;
+        categories = ["Qt" "KDE" "System" "FileManager"];
+        mimeTypes = ["inode/directory"];
+      };
+    in "${launcher}/share/applications/org.kde.dolphin.desktop";
+    # Keep mimeapps.list writable and retain the user's unrelated associations.
+    home.activation.dolphinDefault = lib.hm.dag.entryAfter ["linkGeneration"] ''
+      run ${pkgs.xdg-utils}/bin/xdg-mime default org.kde.dolphin.desktop inode/directory
+    '';
 
     services.playerctld.enable = true;
 
@@ -67,7 +83,7 @@ in
     };
     stylix.targets.zen-browser = {
       enable = true;
-      profileNames = [ "Default Profile" ];
+      profileNames = ["Default Profile"];
     };
 
     services.xembed-sni-proxy = {

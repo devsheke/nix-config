@@ -4,6 +4,7 @@
     alejandra
     arp-scan
     btop
+    cava
     cloc
     chafa
     dnsutils

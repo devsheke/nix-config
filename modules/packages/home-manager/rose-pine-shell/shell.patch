@@ -1,0 +1,512 @@
+--- a/Modules/DankBar/DankBarContent.qml
++++ b/Modules/DankBar/DankBarContent.qml
+@@ -672,7 +672,11 @@
+             "notepadButton": notepadButtonComponent,
+             "colorPicker": colorPickerComponent,
+             "systemUpdate": systemUpdateComponent,
+-            "powerMenuButton": powerMenuButtonComponent
++            "powerMenuButton": powerMenuButtonComponent,
++            "wifiButton": wifiButtonComponent,
++            "bluetoothButton": bluetoothButtonComponent,
++            "volumeButton": volumeButtonComponent,
++            "systemMetricsButton": systemMetricsButtonComponent
+         };
+ 
+         let pluginMap = PluginService.getWidgetComponents();
+@@ -714,7 +718,11 @@
+             "notepadButtonComponent": notepadButtonComponent,
+             "colorPickerComponent": colorPickerComponent,
+             "systemUpdateComponent": systemUpdateComponent,
+-            "powerMenuButtonComponent": powerMenuButtonComponent
++            "powerMenuButtonComponent": powerMenuButtonComponent,
++            "wifiButtonComponent": wifiButtonComponent,
++            "bluetoothButtonComponent": bluetoothButtonComponent,
++            "volumeButtonComponent": volumeButtonComponent,
++            "systemMetricsButtonComponent": systemMetricsButtonComponent
+         })
+ 
+     Item {
+@@ -1088,7 +1096,7 @@
+     Component {
+         id: workspaceSwitcherComponent
+ 
+-        WorkspaceSwitcher {
++        RoseWorkspaces {
+             axis: barWindow.axis
+             screenName: _barScreenName
+             widgetHeight: barWindow.widgetThickness
+@@ -1157,14 +1165,13 @@
+     Component {
+         id: clockComponent
+ 
+-        Clock {
++        RoseClock {
+             id: clockWidget
+             axis: barWindow.axis
+-            compactMode: topBarContent.overlapping
+             barThickness: barWindow.effectiveBarThickness
+             widgetThickness: barWindow.widgetThickness
+             section: topBarContent.getWidgetSection(parent) || "center"
+-            popoutTarget: PopoutService.dankDashPopoutLoader?.item ?? null
++            popoutTarget: PopoutService.rosePanelLoader?.item ?? null
+             parentScreen: barWindow.screen
+ 
+             Component.onCompleted: {
+@@ -1180,11 +1187,11 @@
+             onClockClicked: {
+                 const section = topBarContent.getWidgetSection(parent) || "center";
+                 topBarContent.openWidgetPopout({
+-                    loader: PopoutService.dankDashPopoutLoader,
++                    loader: PopoutService.rosePanelLoader,
+                     widgetItem: clockWidget,
+                     section,
+-                    triggerSource: topBarContent._dashTriggerSource(section, "overview"),
+-                    prepare: popout => popout.requestTab("overview"),
++                    triggerSource: "calendar",
++                    prepare: popout => popout.kind = "calendar",
+                     mode: "click",
+                     useCenterSection: true,
+                     setTriggerScreen: true
+@@ -1196,28 +1203,126 @@
+     Component {
+         id: mediaComponent
+ 
+-        Media {
++        RoseMediaBar {
+             id: mediaWidget
+             axis: barWindow.axis
+-            compactMode: topBarContent.spacingTight || topBarContent.overlapping
++            maxLabelWidth: Math.max(0, Math.min(220, (topBarContent.width - 300) / 2 - 400))
++            barConfig: topBarContent.barConfig
++            compactMode: maxLabelWidth < 64
+             barThickness: barWindow.effectiveBarThickness
+             widgetThickness: barWindow.widgetThickness
+             section: topBarContent.getWidgetSection(parent) || "center"
+-            popoutTarget: PopoutService.dankDashPopoutLoader?.item ?? null
++            popoutTarget: PopoutService.rosePanelLoader?.item ?? null
+             parentScreen: barWindow.screen
+             onClicked: {
+                 const section = topBarContent.getWidgetSection(parent) || "center";
+                 topBarContent.openWidgetPopout({
+-                    loader: PopoutService.dankDashPopoutLoader,
++                    loader: PopoutService.rosePanelLoader,
+                     widgetItem: mediaWidget,
+                     section,
+-                    triggerSource: topBarContent._dashTriggerSource(section, "media"),
+-                    prepare: popout => popout.requestTab("media"),
++                    triggerSource: "media",
++                    prepare: popout => popout.kind = "media",
+                     mode: "click",
+                     useCenterSection: true,
+                     setTriggerScreen: true
+                 });
+             }
++        }
++    }
++
++    Component {
++        id: wifiButtonComponent
++        RoseStatusButton {
++            id: statusWidget
++            kind: "wifi"
++            axis: barWindow.axis
++            barThickness: barWindow.effectiveBarThickness
++            widgetThickness: barWindow.widgetThickness
++            barConfig: topBarContent.barConfig
++            section: topBarContent.getWidgetSection(parent)
++            parentScreen: barWindow.screen
++            popoutTarget: PopoutService.rosePanelLoader?.item ?? null
++            onClicked: topBarContent.openWidgetPopout({
++                loader: PopoutService.rosePanelLoader,
++                widgetItem: statusWidget,
++                section: topBarContent.getWidgetSection(parent),
++                triggerSource: "wifi",
++                prepare: popout => popout.kind = "wifi",
++                mode: "click",
++                setTriggerScreen: true
++            })
++        }
++    }
++
++    Component {
++        id: bluetoothButtonComponent
++        RoseStatusButton {
++            id: statusWidget
++            kind: "bluetooth"
++            axis: barWindow.axis
++            barThickness: barWindow.effectiveBarThickness
++            widgetThickness: barWindow.widgetThickness
++            barConfig: topBarContent.barConfig
++            section: topBarContent.getWidgetSection(parent)
++            parentScreen: barWindow.screen
++            popoutTarget: PopoutService.rosePanelLoader?.item ?? null
++            onClicked: topBarContent.openWidgetPopout({
++                loader: PopoutService.rosePanelLoader,
++                widgetItem: statusWidget,
++                section: topBarContent.getWidgetSection(parent),
++                triggerSource: "bluetooth",
++                prepare: popout => popout.kind = "bluetooth",
++                mode: "click",
++                setTriggerScreen: true
++            })
++        }
++    }
++
++    Component {
++        id: volumeButtonComponent
++        RoseStatusButton {
++            id: statusWidget
++            kind: "audio"
++            axis: barWindow.axis
++            barThickness: barWindow.effectiveBarThickness
++            widgetThickness: barWindow.widgetThickness
++            barConfig: topBarContent.barConfig
++            section: topBarContent.getWidgetSection(parent)
++            parentScreen: barWindow.screen
++            popoutTarget: PopoutService.rosePanelLoader?.item ?? null
++            onClicked: topBarContent.openWidgetPopout({
++                loader: PopoutService.rosePanelLoader,
++                widgetItem: statusWidget,
++                section: topBarContent.getWidgetSection(parent),
++                triggerSource: "audio",
++                prepare: popout => popout.kind = "audio",
++                mode: "click",
++                setTriggerScreen: true
++            })
++        }
++    }
++
++    Component {
++        id: systemMetricsButtonComponent
++        RoseStatusButton {
++            id: statusWidget
++            kind: "metrics"
++            axis: barWindow.axis
++            barThickness: barWindow.effectiveBarThickness
++            widgetThickness: barWindow.widgetThickness
++            barConfig: topBarContent.barConfig
++            section: topBarContent.getWidgetSection(parent)
++            parentScreen: barWindow.screen
++            popoutTarget: PopoutService.rosePanelLoader?.item ?? null
++            onClicked: topBarContent.openWidgetPopout({
++                loader: PopoutService.rosePanelLoader,
++                widgetItem: statusWidget,
++                section: topBarContent.getWidgetSection(parent),
++                triggerSource: "metrics",
++                prepare: popout => popout.kind = "metrics",
++                mode: "click",
++                setTriggerScreen: true
++            })
+         }
+     }
+ 
+--- a/DMSShell.qml
++++ b/DMSShell.qml
+@@ -407,6 +407,16 @@
+     }
+ 
+     LazyLoader {
++        id: rosePanelLoader
++        active: false
++        Component.onCompleted: PopoutService.rosePanelLoader = rosePanelLoader
++        RosePanel {
++            Component.onCompleted: PopoutService.rosePanelPopout = this
++            onPopoutClosed: PopoutService._scheduleUnload("rosePanel")
++        }
++    }
++
++    LazyLoader {
+         id: controlCenterLoader
+ 
+         active: false
+--- a/Services/PopoutService.qml
++++ b/Services/PopoutService.qml
+@@ -10,7 +10,17 @@
+     id: root
+ 
+     property var controlCenterPopout: null
++    readonly property bool barTooltipSuppressed: [
++        controlCenterPopout, rosePanelPopout, notificationCenterPopout,
++        appDrawerPopout, processListPopout, dankDashPopout, batteryPopout,
++        vpnPopout, colorPickerPopout, systemUpdatePopout, layoutPopout,
++        clipboardHistoryPopout, powerMenuPopout, settingsModal,
++        dankLauncherV2Modal, spotlightBarModal, powerMenuModal,
++        wifiPasswordModal, bluetoothPairingModal, powerProfileModal
++    ].some(surface => surface?.shouldBeVisible || surface?.spotlightOpen || surface?.contentVisible)
+     property var controlCenterLoader: null
++    property var rosePanelLoader: null
++    property var rosePanelPopout: null
+     property var notificationCenterPopout: null
+     property var notificationCenterLoader: null
+     property var appDrawerPopout: null
+@@ -115,6 +125,7 @@
+     }
+ 
+     readonly property var _deferredUnloaders: ({
++            "rosePanel": () => _unloadPopoutNow("rosePanelPopout", "rosePanelLoader"),
+             "dankDash": () => _unloadPopoutNow("dankDashPopout", "dankDashPopoutLoader"),
+             "controlCenter": () => _unloadPopoutNow("controlCenterPopout", "controlCenterLoader"),
+             "notificationCenter": () => _unloadPopoutNow("notificationCenterPopout", "notificationCenterLoader"),
+--- a/Modules/DankBar/WidgetHost.qml
++++ b/Modules/DankBar/WidgetHost.qml
+@@ -282,6 +282,10 @@
+             "systemUpdate": components.systemUpdateComponent,
+             "layout": components.layoutComponent,
+             "powerMenuButton": components.powerMenuButtonComponent,
++            "wifiButton": components.wifiButtonComponent,
++            "bluetoothButton": components.bluetoothButtonComponent,
++            "volumeButton": components.volumeButtonComponent,
++            "systemMetricsButton": components.systemMetricsButtonComponent,
+             "appsDock": components.appsDockComponent
+         };
+ 
+--- a/Modules/DankBar/DankBarBody.qml
++++ b/Modules/DankBar/DankBarBody.qml
+@@ -45,6 +45,11 @@
+     }
+ 
+     function triggerControlCenter() {
++        // The widget path queues a first open until LazyLoader finishes loading.
++        if (controlCenterButtonRef) {
++            controlCenterButtonRef.clicked();
++            return;
++        }
+         const loader = PopoutService.controlCenterLoader;
+         if (!loader)
+             return;
+--- a/Modules/Settings/WidgetsTab.qml
++++ b/Modules/Settings/WidgetsTab.qml
+@@ -71,6 +71,34 @@
+     property var baseWidgetDefinitions: {
+         pluginCatalogRevision;
+         var coreWidgets = [
++            {
++                "id": "wifiButton",
++                "text": I18n.tr("Wi-Fi"),
++                "description": I18n.tr("Open the dedicated Wi-Fi panel"),
++                "icon": "wifi",
++                "enabled": true
++            },
++            {
++                "id": "bluetoothButton",
++                "text": I18n.tr("Bluetooth"),
++                "description": I18n.tr("Open the dedicated Bluetooth panel"),
++                "icon": "bluetooth",
++                "enabled": true
++            },
++            {
++                "id": "volumeButton",
++                "text": I18n.tr("Volume"),
++                "description": I18n.tr("Open the dedicated Volume panel"),
++                "icon": "volume_up",
++                "enabled": true
++            },
++            {
++                "id": "systemMetricsButton",
++                "text": I18n.tr("Stats"),
++                "description": I18n.tr("Open the dedicated Stats panel"),
++                "icon": "speed",
++                "enabled": true
++            },
+             {
+                 "id": "layout",
+                 "text": I18n.tr("Layout"),
+--- a/Modules/DankBar/Widgets/ControlCenterButton.qml
++++ b/Modules/DankBar/Widgets/ControlCenterButton.qml
+@@ -620,7 +620,7 @@
+                     visible: root.hasNoVisibleIcons()
+ 
+                     DankIcon {
+-                        name: "settings"
++                        name: "tune"
+                         size: root.vIconSize
+                         color: root.isActive ? Theme.primary : Theme.widgetIconColor
+                         anchors.centerIn: parent
+@@ -845,7 +845,7 @@
+                 }
+ 
+                 DankIcon {
+-                    name: "settings"
++                    name: "tune"
+                     size: root.getControlCenterIconSize()
+                     color: root.isActive ? Theme.primary : Theme.widgetIconColor
+                     anchors.verticalCenter: parent.verticalCenter
+--- a/Modals/DankLauncherV2/DankLauncherV2ModalSpotlight.qml
++++ b/Modals/DankLauncherV2/DankLauncherV2ModalSpotlight.qml
+@@ -34,7 +34,7 @@
+     readonly property real screenWidth: effectiveScreen?.width ?? 1920
+     readonly property real screenHeight: effectiveScreen?.height ?? 1080
+     readonly property real dpr: effectiveScreen ? CompositorService.getScreenScale(effectiveScreen) : 1
+-    readonly property bool useBackgroundDarken: !FrameTransitionState.effectiveFrameEnabled && SettingsData.modalDarkenBackground
++    readonly property bool useBackgroundDarken: false
+     readonly property bool usesOverlayLayer: useBackgroundDarken || SettingsData.launcherUseOverlayLayer || triggerUsesOverlayLayer
+     readonly property var effectiveLauncherLayer: LayerShell.fromEnv("DMS_MODAL_LAYER", root.usesOverlayLayer ? WlrLayer.Overlay : WlrLayer.Top, {
+         "allow": ["top", "overlay"],
+--- a/Modules/ControlCenter/ControlCenterPopout.qml
++++ b/Modules/ControlCenter/ControlCenterPopout.qml
+@@ -90,7 +90,7 @@
+         StateUtils.toggleSection(root, section);
+     }
+ 
+-    popupWidth: 550
++    popupWidth: 420
+     popupHeight: targetPopupHeight
+     triggerWidth: 80
+     positioning: ""
+--- a/Modules/DankBar/Widgets/Battery.qml
++++ b/Modules/DankBar/Widgets/Battery.qml
+@@ -140,7 +140,7 @@
+                 DankIcon {
+                     name: BatteryService.getBatteryIcon()
+                     visible: !battery.pillStyle
+-                    size: Theme.barIconSize(battery.barThickness, undefined, battery.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)
++                    size: Theme.barIconSize(battery.barThickness, undefined, battery.barConfig?.maximizeWidgetIcons, battery.barConfig?.iconScale)
+                     color: {
+                         if (!BatteryService.batteryAvailable) {
+                             return Theme.widgetIconColor;
+@@ -170,7 +170,7 @@
+                     meterStyle: battery.batteryStyle
+                     levelColors: battery.levelColors
+                     maxDiameter: battery.widgetThickness - Theme.spacingXS
+-                    thickness: Theme.barIconSize(battery.barThickness, undefined, battery.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)
++                    thickness: Theme.barIconSize(battery.barThickness, undefined, battery.barConfig?.maximizeWidgetIcons, battery.barConfig?.iconScale)
+                     anchors.horizontalCenter: parent.horizontalCenter
+                 }
+ 
+@@ -193,7 +193,7 @@
+                 DankIcon {
+                     name: BatteryService.getBatteryIcon()
+                     visible: !battery.pillStyle
+-                    size: Theme.barIconSize(battery.barThickness, -4, battery.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)
++                    size: Theme.barIconSize(battery.barThickness, -4, battery.barConfig?.maximizeWidgetIcons, battery.barConfig?.iconScale)
+                     color: {
+                         if (!BatteryService.batteryAvailable) {
+                             return Theme.widgetIconColor;
+@@ -222,7 +222,7 @@
+                     meterStyle: battery.batteryStyle
+                     levelColors: battery.levelColors
+                     maxDiameter: battery.widgetThickness - Theme.spacingXS
+-                    thickness: Theme.barIconSize(battery.barThickness, -4, battery.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)
++                    thickness: Theme.barIconSize(battery.barThickness, -4, battery.barConfig?.maximizeWidgetIcons, battery.barConfig?.iconScale)
+                     fontSize: Theme.barTextSize(battery.barThickness, battery.barConfig?.fontScale, battery.barConfig?.maximizeWidgetText)
+                     anchors.verticalCenter: parent.verticalCenter
+                 }
+--- a/Modules/PowerMenu/PowerMenuContent.qml
++++ b/Modules/PowerMenu/PowerMenuContent.qml
+@@ -445,7 +445,7 @@
+                 readonly property bool isHolding: root.holdActionIndex === index && root.holdProgress > 0
+ 
+                 width: (root.width - Theme.spacingL * 2 - Theme.spacingS * (root.gridColumns - 1)) / root.gridColumns
+-                height: 100
++                height: 80
+                 radius: Theme.cornerRadius
+                 color: {
+                     if (isSelected)
+@@ -484,7 +484,7 @@
+ 
+                     DankIcon {
+                         name: gridButtonRect.actionData.icon
+-                        size: Theme.iconSize + 8
++                        size: 20
+                         color: {
+                             if (gridButtonRect.showWarning && (mouseArea.containsMouse || gridButtonRect.isHolding)) {
+                                 return gridButtonRect.modelData === "poweroff" ? Theme.error : Theme.warning;
+@@ -571,7 +571,7 @@
+                 readonly property bool isHolding: root.holdActionIndex === index && root.holdProgress > 0
+ 
+                 width: parent.width
+-                height: 56
++                height: 48
+                 radius: Theme.cornerRadius
+                 color: {
+                     if (isSelected)
+@@ -616,7 +616,7 @@
+ 
+                     DankIcon {
+                         name: listButtonRect.actionData.icon
+-                        size: Theme.iconSize + 4
++                        size: 18
+                         color: {
+                             if (listButtonRect.showWarning && (listMouseArea.containsMouse || listButtonRect.isHolding)) {
+                                 return listButtonRect.modelData === "poweroff" ? Theme.error : Theme.warning;
+--- a/Widgets/DankTooltip.qml
++++ b/Widgets/DankTooltip.qml
+@@ -16,8 +16,25 @@
+     property var targetScreen: null
+     property bool alignLeft: false
+     property bool alignRight: false
++    property bool tooltipShown: false
++    property bool suppressWhenPopoutOpen: true
++    readonly property bool suppressed: suppressWhenPopoutOpen && PopoutService.barTooltipSuppressed
++    mask: Region {}
++    onSuppressedChanged: {
++        if (!suppressed) return;
++        hideTimer.stop();
++        tooltipShown = false;
++        visible = false;
++    }
++    Timer {
++        id: hideTimer
++        interval: 120
++        onTriggered: root.visible = false
++    }
+ 
+     function show(text, x, y, screen, leftAlign, rightAlign) {
++        if (suppressed) return;
++        hideTimer.stop();
+         root.text = text;
+         targetScreen = screen ?? null;
+         targetX = x;
+@@ -25,10 +42,12 @@
+         alignLeft = leftAlign ?? false;
+         alignRight = rightAlign ?? false;
+         visible = true;
++        tooltipShown = true;
+     }
+ 
+     function hide() {
+-        visible = false;
++        tooltipShown = false;
++        hideTimer.restart();
+     }
+ 
+     screen: targetScreen
+@@ -76,6 +95,12 @@
+ 
+     Rectangle {
+         anchors.fill: parent
++        opacity: root.tooltipShown ? 1 : 0
++        Behavior on opacity { NumberAnimation { duration: 110; easing.type: Easing.OutCubic } }
++        transform: Translate {
++            y: root.tooltipShown ? 0 : -3
++            Behavior on y { NumberAnimation { duration: 110; easing.type: Easing.OutCubic } }
++        }
+         color: Theme.withAlpha(Theme.surfaceContainerHigh, Theme.popupTransparency)
+         radius: Theme.cornerRadius
+         border.width: BlurService.borderWidth
+--- a/DankCommon/Widgets/DankButtonGroup.qml
++++ b/DankCommon/Widgets/DankButtonGroup.qml
+@@ -120,10 +120,10 @@
+             border.color: "transparent"
+             border.width: 0
+ 
+-            topLeftRadius: (visualFirst || selected) ? Style.cornerRadius : Math.min(4, Style.cornerRadius)
+-            bottomLeftRadius: (visualFirst || selected) ? Style.cornerRadius : Math.min(4, Style.cornerRadius)
+-            topRightRadius: (visualLast || selected) ? Style.cornerRadius : Math.min(4, Style.cornerRadius)
+-            bottomRightRadius: (visualLast || selected) ? Style.cornerRadius : Math.min(4, Style.cornerRadius)
++            topLeftRadius: root.buttonHeight / 2
++            bottomLeftRadius: root.buttonHeight / 2
++            topRightRadius: root.buttonHeight / 2
++            bottomRightRadius: root.buttonHeight / 2
+ 
+             Behavior on width {
+                 enabled: root.userInteracted
+@@ -198,7 +198,7 @@
+ 
+             DankRipple {
+                 id: segmentRipple
+-                cornerRadius: Style.cornerRadius
++                cornerRadius: root.buttonHeight / 2
+                 rippleColor: segment.selected ? Style.buttonText : Style.surfaceVariantText
+             }
+ 
