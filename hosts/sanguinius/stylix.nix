@@ -3,6 +3,7 @@
     enable = true;
     image = ../../assets/wallpapers/sanguinius-woodblock-restored.png;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/rose-pine.yaml";
+    override.base00 = "13111b";
     polarity = "dark";
 
     cursor = {

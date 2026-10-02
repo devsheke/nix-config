@@ -65,7 +65,9 @@ Grouped buttons have fully rounded ends in every state. The dock uses 44 px
 Papirus icons, 8 px spacing and a 12 px bottom gap, grouped running windows,
 and edge-triggered auto-hide. Its migrated pin order is Ghostty, Dolphin,
 Brave, Obsidian, ONLYOFFICE, ChatGPT, Spotify, Steam. Bar/dock/panel opacity
-remains 85%/80%/90%; shell colors come from Stylix.
+remains 85%/80%/90%; shell colors come from Stylix. The primary background
+is `#13111b`, a darker Rosé Pine base applied to the bar, dock, and popover
+surfaces. Raised cards keep the palette's lighter surface colors.
 
 Custom QML lives beside the module in `rose-pine-shell/qml`. The locked
 upstream package is patched during `postInstall` using `shell.patch` with

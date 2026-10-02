@@ -41,7 +41,7 @@
     primaryText = colors.base00;
     primaryContainer = colors.base02;
     secondary = colors.base0D;
-    surface = colors.base01;
+    surface = colors.base00;
     surfaceText = colors.base05;
     surfaceVariant = colors.base02;
     surfaceVariantText = colors.base04;
@@ -51,7 +51,7 @@
     outline = colors.base0F;
     surfaceContainerLowest = colors.base00;
     surfaceContainerLow = colors.base01;
-    surfaceContainer = colors.base01;
+    surfaceContainer = colors.base00;
     surfaceContainerHigh = colors.base02;
     surfaceContainerHighest = colors.base02;
     error = colors.base08;
