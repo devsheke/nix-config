@@ -1,7 +1,7 @@
 { pkgs, ... }: {
   stylix = {
     enable = true;
-    # image = /home/sheke/Pictures/sanguinius-motif.png;
+    image = ../../assets/wallpapers/sanguinius-woodblock-restored.png;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/rose-pine.yaml";
     polarity = "dark";
 

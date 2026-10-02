@@ -1,0 +1,30 @@
+Built-in imagegen edit; reference: sanguinius-woodblock-generated.png.
+Output: sanguinius-woodblock-clean-generated.png, actual 1672x941 pixels.
+Accepted after user selected cleaner redraw with upscaling. Resampled with
+Pillow Lanczos to sanguinius-woodblock-clean.png, 3840x2160. Applied with DMS IPC
+and referenced by Stylix; previous wallpaper preserved.
+
+Use case: style-transfer / high-detail restoration. Edit target: the attached
+desktop wallpaper. The user reports that it looks low resolution on their
+display. Re-render the same artwork at genuinely native 3840 x 2160 pixels,
+with newly resolved fine detail, not an enlarged soft preview. Asset: premium
+4K dark desktop wallpaper.
+
+Preserve precisely the recognizable centered symmetrical winged sword emblem,
+purple central sword/cross, gold flame/drop, gold radial halo, broad wings,
+existing palette and composition. Complete emblem occupies roughly 75 percent
+of canvas width and remains inside the central 16:10 crop-safe region of this
+16:9 canvas.
+
+Change only rendering fidelity and distracting texture: sharply defined carved
+contours, thin clean feather separations, confident Hokusai-like woodblock
+linework, finely resolved clean ink shapes, crisp gold rays and flame borders.
+Eliminate smeared/painterly fuzz and compression-like noise. Make dark
+background near-flat Rose Pine #191724 with very faint fine paper grain, far
+quieter and smoother than the current dense gritty texture. Keep emblem's print
+texture subtle, organic, and finely resolved; neither blurry nor rough gritty
+stipple. Restrained muted foam #9ccfd8, iris #c4a7e7, rose #ebbcba, gold #f6c177,
+text #e0def4. Preserve quiet dark negative space. Clean screen-print precision
+with traditional Japanese woodblock character. No glossy 3D shading, no
+photorealism, no extra ornaments, no scene, no ocean, no lettering, no watermark.
+Deliver actual 3840x2160 PNG if supported; request maximum native image fidelity.
