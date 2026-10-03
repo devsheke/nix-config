@@ -8,15 +8,20 @@ let
   apps = import ../../modules/packages pkgs;
   chatgpt = pkgs.callPackage ./chatgpt.nix { };
   system = "x86_64-linux";
-  patchDesktop =
-    pkg: appName: from: to:
-    lib.hiPrio (
-      pkgs.runCommand "$patched-desktop-entry-for-${appName}" { } ''
-        ${pkgs.coreutils}/bin/mkdir -p $out/share/applications
-        ${pkgs.gnused}/bin/sed 's#${from}#${to}#g' < ${pkg}/share/applications/${appName}.desktop > $out/share/applications/${appName}.desktop
-      ''
-    );
-  GPUOffloadApp = pkg: desktopName: (patchDesktop pkg desktopName "^Exec=" "Exec=nvidia-offload ");
+  GPUOffloadApp =
+    pkg: desktopName:
+    let
+
+      patchDesktop =
+        pkg: appName: from: to:
+        lib.hiPrio (
+          pkgs.runCommand "$patched-desktop-entry-for-${appName}" { } ''
+            ${pkgs.coreutils}/bin/mkdir -p $out/share/applications
+            ${pkgs.gnused}/bin/sed 's#${from}#${to}#g' < ${pkg}/share/applications/${appName}.desktop > $out/share/applications/${appName}.desktop
+          ''
+        );
+    in
+    (patchDesktop pkg desktopName "^Exec=" "Exec=nvidia-offload ");
 in
 {
   programs.direnv = {
@@ -84,7 +89,6 @@ in
       waybar
       xarchiver
       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
-      pkgs.sddm-astronaut
       mkcert
       nssTools
       (GPUOffloadApp pkgs.steam "steam")
