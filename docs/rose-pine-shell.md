@@ -23,11 +23,53 @@ backs up the five edited files under `~/.config/hypr/backups/rose-pine-shell-*`
 before writing, preserves unrelated bindings/decorations, and does not reload
 Hyprland itself. It can be rerun without adding duplicate rules or bindings.
 
+The matching Hyprlock config is
+`modules/packages/home-manager/rose-pine-shell/hyprlock.conf`. It uses the
+same JetBrains Mono font, Rosé Pine palette, 90% dark panel surface, 16 px
+corners and 180 ms fades, with a blurred desktop behind a centered clock and
+unlock panel. Fingerprint prompts and the clickable keyboard layout sit below
+the password field. A bottom-center battery label reads BAT0's percentage and
+charging status directly from sysfs every ten seconds. Hyprlock remains a
+regular local config; apply later edits
+after backing up the current file:
+
+```sh
+cp -p ~/.config/hypr/hyprlock.conf ~/.config/hypr/hyprlock.conf.backup-$(date +%Y%m%dT%H%M%S)
+install -m 644 /home/sheke/.config/nix-config/modules/packages/home-manager/rose-pine-shell/hyprlock.conf ~/.config/hypr/hyprlock.conf
+```
+
+The next invocation of Hyprlock loads the new config.
+
 On first activation, stop the old session's manually launched Waybar, SwayNC,
 swaybg, Walker, Elephant, nm-applet and blueman-applet processes, then start
 `systemctl --user start dms.service`. A fresh login also uses the new startup
 configuration. DMS starts once through the graphical-session systemd target;
 do not add `dms run` to the Hyprland autostart file.
+
+## Editable SDDM theme
+
+The `rose-pine-glass` login theme lives in `hosts/sanguinius/sddm-theme`.
+Edit `theme.conf` for panel opacity, size, position, padding, corner radius,
+fonts and Rosé Pine colors. Edit `Main.qml` and `Components/LoginForm.qml`
+for layout changes. The default is a compact 440 × 600 px left panel with
+90% `#13111b` glass, 16 px corners, partial blur and JetBrains Mono.
+Astronaut's user, password, session and power controls are kept locally with
+their original license notices. Authentication configuration remains in
+`hosts/sanguinius/services.nix`.
+
+Preview without a rebuild or sudo, then close and relaunch after each edit:
+
+```sh
+/home/sheke/.config/nix-config/scripts/preview-sddm.sh
+```
+
+`hosts/sanguinius/sddm-rose-pine.nix` packages the local files directly and
+copies `stylix.image` into the installed theme. Only the installed wallpaper
+path is overridden in `theme.conf.user`; QML is no longer patched during the
+build. The source preview uses the repository wallpaper via a relative path.
+Runtime shell wallpaper selections do not automatically update SDDM.
+Apply using the NixOS rebuild command above. More editing details and source
+provenance are in `hosts/sanguinius/sddm-theme/README.md`.
 
 ## Design and behavior
 
