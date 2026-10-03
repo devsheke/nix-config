@@ -110,7 +110,17 @@
 
   xdg.portal = {
     enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-hyprland
+      kdePackages.xdg-desktop-portal-kde
+    ];
+    config.hyprland = {
+      default = [
+        "hyprland"
+        "gtk"
+      ];
+      "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
+    };
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
