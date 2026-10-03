@@ -1,30 +1,36 @@
-# sddm-rose-pine.nix
-
 {
+  lib,
   stdenvNoCC,
-  fetchFromGitHub,
-  libsForQt5,
-}:
-
-stdenvNoCC.mkDerivation rec {
-  pname = "sddm-rose-pine-theme";
-  version = "1.2";
-  dontBuild = true;
-
-  propagatedUserEnvPkgs = [
-    libsForQt5.qt5.qtgraphicaleffects
-  ];
-
-  src = fetchFromGitHub {
-    owner = "lwndhrst";
-    repo = "sddm-rose-pine";
-    rev = "v${version}";
-    sha256 = "+WOdazvkzpOKcoayk36VLq/6lLOHDWkDykDsy8p87JE=";
+  kdePackages,
+  formats,
+  wallpaper,
+}: let
+  wallpaperConfig = (formats.ini {}).generate "sddm-wallpaper.conf" {
+    General.Background = "Backgrounds/current-wallpaper.png";
   };
+in
+  stdenvNoCC.mkDerivation {
+    pname = "sddm-rose-pine-glass";
+    version = "1.0";
+    src = ./sddm-theme;
+    dontBuild = true;
+    propagatedBuildInputs = with kdePackages; [qtsvg.out qtvirtualkeyboard.out];
 
-  installPhase = ''
-    mkdir -p $out/share/sddm/themes
-    cp -aR $src $out/share/sddm/themes/rose-pine
-    echo $out
-  '';
-}
+    installPhase = ''
+      runHook preInstall
+      theme_dir="$out/share/sddm/themes/rose-pine-glass"
+      mkdir -p "$theme_dir"
+      cp -r ./. "$theme_dir/"
+      chmod -R u+w "$theme_dir"
+      mkdir -p "$theme_dir/Backgrounds"
+      cp ${wallpaper} "$theme_dir/Backgrounds/current-wallpaper.png"
+      cp ${wallpaperConfig} "$theme_dir/theme.conf.user"
+      runHook postInstall
+    '';
+
+    meta = {
+      description = "Editable Rosé Pine Glass SDDM theme";
+      license = lib.licenses.gpl3Plus;
+      platforms = lib.platforms.linux;
+    };
+  }
