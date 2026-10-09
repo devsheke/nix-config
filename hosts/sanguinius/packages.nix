@@ -70,6 +70,7 @@ in
       libinput-gestures
       looking-glass-client
       mpv
+      meshlab
       networkmanagerapplet
       inputs.matugen.packages.${system}.default
       obsidian
@@ -77,6 +78,7 @@ in
       openvpn
       pavucontrol
       polkit_gnome
+      readest
       satty
       seahorse
       spotify
