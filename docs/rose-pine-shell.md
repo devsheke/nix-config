@@ -78,8 +78,18 @@ bar text, 13 px workspace symbols, and 14 px custom status icons. Its left
 section is the square Nix power button, square
 workspace buttons with no gaps between them, and focused app/title. The clock
 is centered independently and reads `Fri Oct 02 11:27 2026`. Its popout contains
-only date, time, and a calendar. Workspaces 1–5 remain visible; additional
-positive workspaces appear when active or occupied. Workspace app thumbnails
+only date, time, and a calendar. Workspaces 1–4 remain visible; workspace 5
+(Windows) appears as a numbered button only while active with no special
+workspace open on that screen. Workspace 6 uses a Steam icon for the
+Steam/Heroic launchers and appears only while active with no special workspace
+open on that screen. Special workspace buttons appear only while their workspace
+is open on that screen: a gamepad for `special:games`, a microchip for
+`special:ai`, and a book for `special:reading`. Each button shows the active
+highlight and toggles its workspace closed. Tooltips include Super+G for games,
+Super+grave for AI, and Super+R for reading (Readest).
+Positive workspaces above 6 appear when active or occupied; wheel scrolling
+stays on the visible numbered workspaces.
+Workspace app thumbnails
 were removed following the visual review, keeping each symbol centered.
 
 The right section contains single-line, ellipsized media text; independent

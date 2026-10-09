@@ -5,11 +5,13 @@ import csv
 import io
 import json
 import math
+from pathlib import Path
 import shutil
 import subprocess
 
 
 FIELDS = "uuid,name,utilization.gpu,memory.used,memory.total,temperature.gpu,power.draw"
+NVIDIA_DRIVER_PATH = Path("/sys/bus/pci/drivers/nvidia")
 
 
 def number(value):
@@ -45,6 +47,20 @@ def unavailable(message):
 
 
 def collect(binary=None):
+    # Reading sysfs does not wake the GPU; querying NVIDIA telemetry can.
+    # The query below covers every GPU, so only run it when all are active.
+    try:
+        devices = sorted(NVIDIA_DRIVER_PATH.glob("????:??:??.?"))
+        if not devices:
+            return unavailable("No NVIDIA GPU detected")
+        states = [(device / "power/runtime_status").read_text().strip() for device in devices]
+    except OSError:
+        return unavailable("NVIDIA power state unavailable")
+    if all(state == "suspended" for state in states):
+        return unavailable("Sleeping")
+    if any(state != "active" for state in states):
+        return unavailable("NVIDIA GPU not active")
+
     binary = binary or shutil.which("nvidia-smi")
     if not binary:
         return unavailable("NVIDIA monitoring unavailable")
