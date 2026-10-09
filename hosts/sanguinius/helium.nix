@@ -1,5 +1,18 @@
 {pkgs, ...}: let
   inherit (pkgs) lib stdenv;
+  qtPackageSets = [pkgs.libsForQt5 pkgs.kdePackages];
+  # Only runtime outputs are needed; Qt 5 and Qt 6 development hooks conflict.
+  qtRuntimePackages =
+    lib.concatMap (
+      qt: map lib.getLib [qt.qtbase qt.qtwayland]
+    )
+    qtPackageSets;
+  qtPluginPath =
+    lib.concatMapStringsSep ":" (
+      # Qt 5 keeps plugins in its bin output; Qt 6 uses the default output.
+      qt: lib.makeSearchPath qt.qtbase.qtPluginPrefix (map lib.getBin [qt.qtbase qt.qtwayland])
+    )
+    qtPackageSets;
 in
   stdenv.mkDerivation (finalAttrs: {
     pname = "helium";
@@ -17,35 +30,33 @@ in
       (wrapGAppsHook3.override {makeWrapper = makeShellWrapper;})
     ];
 
-    buildInputs = with pkgs; [
-      alsa-lib
-      at-spi2-atk
-      at-spi2-core
-      cairo
-      cups
-      dbus
-      expat
-      glib
-      gtk3
-      libgbm
-      libx11
-      libxcb
-      libxcomposite
-      libxdamage
-      libxext
-      libxfixes
-      libxkbcommon
-      libxrandr
-      nspr
-      nss
-      pango
-      stdenv.cc.cc.lib
-      systemd
-      # Only runtime libraries are needed for the bundled Qt shims; mixing
-      # the Qt 5 and Qt 6 development setup hooks causes a version conflict.
-      (lib.getLib libsForQt5.qtbase)
-      (lib.getLib kdePackages.qtbase)
-    ];
+    buildInputs =
+      (with pkgs; [
+        alsa-lib
+        at-spi2-atk
+        at-spi2-core
+        cairo
+        cups
+        dbus
+        expat
+        glib
+        gtk3
+        libgbm
+        libx11
+        libxcb
+        libxcomposite
+        libxdamage
+        libxext
+        libxfixes
+        libxkbcommon
+        libxrandr
+        nspr
+        nss
+        pango
+        stdenv.cc.cc.lib
+        systemd
+      ])
+      ++ qtRuntimePackages;
 
     # Chromium loads these with dlopen rather than ELF dependencies.
     runtimeDependencies = map lib.getLib (with pkgs; [
@@ -82,6 +93,7 @@ in
         "''${gappsWrapperArgs[@]}" \
         --set CHROME_WRAPPER "$out/bin/helium" \
         --set CHROME_VERSION_EXTRA "nixos" \
+        --prefix QT_PLUGIN_PATH : ${qtPluginPath} \
         --prefix LD_LIBRARY_PATH : "$out/lib/helium:${lib.makeLibraryPath finalAttrs.runtimeDependencies}" \
         --suffix PATH : ${lib.makeBinPath [pkgs.xdg-utils pkgs.coreutils]} \
         --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-wayland-ime=true}}"

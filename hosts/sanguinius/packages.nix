@@ -7,6 +7,7 @@
 let
   apps = import ../../modules/packages pkgs;
   chatgpt = pkgs.callPackage ./chatgpt.nix { };
+  helium = pkgs.callPackage ./helium.nix { };
   system = "x86_64-linux";
   GPUOffloadApp =
     pkg: desktopName:
@@ -63,6 +64,7 @@ in
       fastfetch
       grimblast
       guestfs-tools
+      helium
       heroic
       hyprlock
       hyprshutdown
