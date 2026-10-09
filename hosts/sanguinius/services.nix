@@ -19,6 +19,16 @@ in {
   };
 
   security.polkit.enable = true;
+
+  services.openssh = {
+    enable = true;
+    openFirewall = true;
+    settings = {
+      PasswordAuthentication = true;
+      PermitRootLogin = "no";
+    };
+  };
+
   security.pam.services = {
     sddm = {
       fprintAuth = false;
